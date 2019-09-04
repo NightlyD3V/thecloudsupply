@@ -1,0 +1,106 @@
+<script id="ListProductTemplate_type2" type="text/template">
+  {% raw %}
+  {{#items}}
+    <div class="{{classItem}}">
+      <div class="product_scale">
+        <div class="item-product item-animate type_2">
+          <div class="thumbnail-container">
+            <a href="{{url}}">
+              <img class="img-fluid product__thumbnail lazyload" src="{{img}}" alt="{{name}}">
+              <img class="img-fluid product__thumbnail-second lazyload" src="{{imgsecond}}" alt="{{name}}">
+            </a>
+          </div>
+
+          <div class="product__info">
+            <div class="product-group text-center">
+              <div class="product__title">
+                <a href="{{url}}">{{name}}</a>
+              </div>
+              {% endraw %}
+              {% if settings.show_rating %}
+              {% raw %}
+              <div class="product__review">
+                <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{id}}"></span></div>
+              </div>
+              {% endraw %}
+              {% endif %}
+              {% raw %}
+              <div class="product__price">
+                <span class="product-price__price"><span class="money">{{price}}</span></span>
+              </div>
+            </div>
+            <div class="group-buttons d-flex justify-content-center">
+              {% endraw %}
+              {% if settings.wishlist_enable %}
+              {% raw %}
+              <scr{{!}}ipt class="swym-product-view-snippet">
+                ['SwymViewProducts', 'SwymWatchProducts', 'SwymProductVariants'].forEach(function(k){
+                  if(!window[k]) window[k] = {};
+                });
+                (function(et){
+                  var collections = "{{product_type}}";
+                  var o={}, empi={{id}},
+                  piu = "{{variants_first_image}}";
+                  
+                  SwymProductVariants[{{variants_first_id}}] = {
+                    empi:empi,epi:{{variants_first_id}},
+                    du:"{{url}}",
+                    dt:"{{name}}",
+                    iu: null || piu,
+                    stk: 1,
+                    pr: {{price_nofomat}}/100,
+                    op: {{compare_at_price_nofomat}}/100, 
+                    variants: [{ "Default Title" : {{variants_first_id}} }]
+                  };
+                  SwymWatchProducts[{{variants_first_id}}] = o[{{variants_first_id}}] = {"id": {{variants_first_id}}, "available": true,"inventory_management": null,"inventory_quantity": 1,"title": "Default Title", "inventory_policy": "deny"};
+                  
+                  var product_data = {
+                    empi:empi, epi:{{variants_first_id}},
+                    dt  :"Organic Strawberry Fruits",du:"https://freshmart-vinova.myshopify.com/products/organic-strawberry-fruits-10",
+                    ct  :collections,pr:{{price_nofomat}}/100,stk:1,
+                    iu  :null || piu,variants:[{ "Default Title" : {{variants_first_id}} }],
+                    op:{{compare_at_price_nofomat}}/100 
+                  };
+                  SwymViewProducts["{{handle}}"] = SwymViewProducts[{{id}}] = product_data;
+                  SwymWatchProducts["{{handle}}"] = SwymWatchProducts[{{id}}] = o;
+                })();
+              </scr{{!}}ipt>
+              <div class="productWishList">
+                <a href="#" class="btn btnProduct btnProductWishlist swym-button swym-add-to-wishlist-view-product product_{{id}}" data-swaction="addToWishlist" data-product-id="{{id}}" data-toggle="tooltip" data-placement="top"></a>
+              </div>
+              {% endraw %}
+              {% endif %}
+              {% raw %}
+                <form class="formAddToCart" action="/cart/add" method="post" enctype="multipart/form-data">
+                  <input type="hidden" name="id" value="{{variants_first_id}}" />
+                    {{#if variantmulti }}
+                      <a class="btn btnAddToCart" href="{{url}}" data-toggle="tooltip" data-placement="top" title="{% endraw %}{{ 'products.product.select_options' | t }}{% raw %}">
+                        <i class="zmdi zmdi-check"></i>
+                        <span>{% endraw %}{{ 'products.product.select_options' | t }}{% raw %}</span>
+                      </a>
+                    {{else}}
+                      <button class="btn btnAddToCart" type="submit" value="Submit" data-handle="{{handle}}" data-toggle="tooltip" data-placement="top" title="{% endraw %}{{ 'products.product.add_to_cart' | t }}{% raw %}">
+                        <i class="zmdi zmdi-shopping-cart"></i>
+                        <span>{% endraw %}{{ 'products.product.add_to_cart' | t }}{% raw %}</span>
+                      </button>
+                    {{/if}}
+                </form>
+              {% endraw %}
+              {% if settings.quickview_enable %}
+              {% raw %}
+                <div class="productQuickView d-md-block">
+                  <a class="btn btnProduct btnProductQuickview" href="#" data-handle="{{handle}}" data-toggle="tooltip" data-placement="top" title="{% endraw %}{{ 'products.butttons.quickview' | t }}{% raw %}">
+                      <i class="zmdi zmdi-search"></i>
+                  </a>
+                </div>
+              {% endraw %}
+              {% endif %}
+              {% raw %}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  {{/items}}
+  {% endraw %}
+</script>

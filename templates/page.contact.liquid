@@ -1,0 +1,59 @@
+<div class="page-width page-contact-us">
+  {% include 'nov-breadcrumb' %}
+  <div class="container">
+    {%comment%}
+    <h1 class="headingPage title_block text-center text-uppercase">{{ page_title }}</h1>
+    {% if page.content.size > 0 %}
+      <div class="rte">
+        {{ page.content }}
+      </div>
+    {% endif %}
+    {%endcomment%}
+    <div class="mt-30 mb-5">
+      {% section 'nov-page-contact' %}
+    </div>
+    {% section 'nov-map' %}
+    {% section 'nov-page-content' %}
+    <div class="text-center">
+      <span class="icon-comment"></span>
+    </div>
+    <div class="contact-form form-vertical pt-20">
+      {% form 'contact' %}
+
+        {% if form.posted_successfully? %}
+          <p class="note form-success">
+            {{ 'contact.form.post_success' | t }}
+          </p>
+        {% endif %}
+
+        {{ form.errors | default_errors }}
+
+        <div class="form-group row">
+          <div class="col-md-6 pr-5 pl-15 pr-xs-15 mb-xs-10">
+            <input type="text" id="ContactFormName" name="contact[name]" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'contact.form.name' | t }}">
+          </div>
+          <div class="col-md-6 pl-5 pr-15 pl-xs-15">
+            {% if form.errors contains 'email' %}<label for="ContactFormEmail" class="label--error"></label>{% endif %}
+            <input type="email" id="ContactFormEmail" name="contact[email]" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" class="{% if form.errors contains 'email' %}input--error{% endif %}" placeholder="{{ 'contact.form.email' | t }}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <input type="tel" id="ContactFormPhone" name="contact[phone]" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'contact.form.phone' | t }}">
+          </div>
+        </div>
+
+        <div class="form-group row">
+          <div class="col-md-12">
+            <textarea rows="10" id="ContactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+          </div>
+        </div>
+
+        <input type="submit" class="btn" value="{{ 'contact.form.submit' | t }}">
+
+      {% endform %}
+    </div>
+
+  </div>
+</div>

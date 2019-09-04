@@ -1,0 +1,90 @@
+<div class="container">
+	<div class="row">
+		<div class="w-32">
+			<div class="gallery-image__item">
+				<a href="{{ section.settings.link_img1 }}"><img class="mb-15" src="{{ section.settings.img_1 | img_url: '1920x' }}" alt="image"></a>
+			</div>
+			<div class="gallery-image__item">
+				<a href="{{ section.settings.link_img2 }}"><img src="{{ section.settings.img_2 | img_url: '1920x' }}" alt="image"></a>
+			</div>
+		</div>
+		<div class="w-35">
+			<div class="gallery-image__item">
+				<a href="{{ section.settings.link_img3 }}"><img src="{{ section.settings.img_3 | img_url: '1920x' }}" alt="image"></a>
+			</div>
+		</div>
+		<div class="w-32">
+			<div class="gallery-image__item">
+				<a href="{{ section.settings.link_img4 }}"><img class="mb-15" src="{{ section.settings.img_4 | img_url: '1920x' }}" alt="image"></a>
+			</div>
+			<div class="gallery-image__item">
+				<a href="{{ section.settings.link_img5 }}"><img src="{{ section.settings.img_5 | img_url: '1920x' }}" alt="image"></a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% schema %}
+	{
+		"name": "Group image special",
+		"class": "mt-30 group-image-special",
+		"settings": [
+			{
+			  "type": "image_picker",
+			  "id": "img_1",
+			  "label": "Image 1"
+			},
+			{
+				"type": "url",
+				"id":  "link_img1",
+				"label": "Link Img 1"
+			},
+			{
+			  "type": "image_picker",
+			  "id": "img_2",
+			  "label": "Image 2"
+			},
+			{
+				"type": "url",
+				"id":  "link_img2",
+				"label": "Link Img 2"
+			},
+			{
+			  "type": "image_picker",
+			  "id": "img_3",
+			  "label": "Image 3"
+			},
+			{
+				"type": "url",
+				"id":  "link_img3",
+				"label": "Link Img 3"
+			},
+			{
+			  "type": "image_picker",
+			  "id": "img_4",
+			  "label": "Image 4"
+			},
+			{
+				"type": "url",
+				"id":  "link_img4",
+				"label": "Link Img 4"
+			},
+			{
+			  "type": "image_picker",
+			  "id": "img_5",
+			  "label": "Image 5"
+			},
+			{
+				"type": "url",
+				"id":  "link_img5",
+				"label": "Link Img 5"
+			}
+		],
+		"presets": [
+		  {
+		    "name": "Group Image Special",
+		    "category": "Image"
+		  }
+		]
+	}
+{% endschema %}

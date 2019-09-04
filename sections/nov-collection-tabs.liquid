@@ -1,0 +1,628 @@
+<div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}">
+  {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+  {% endif %}
+      <div data-section-id="{{ section.id }}" {% if section.settings.tab_type == 'slider' %}data-section-type="nov-slick"{% else %}data-section-type="nov-tabsgrid"{% endif %}>
+        <div class="page-width nov-collection-tabs{% if section.settings.class != blank %} {{ section.settings.class }}{% endif %}{% if section.settings.tab_type == "slider" %} nov-collection-tabs-slider{% else %} nov-collection-tabs-grid{% endif %} {{ section.settings.style_tabs }}">
+          <div id="product-tabs-categories-{{ section.id }}" class="block product-tabs-categories">
+            {%- assign collection = collections[section.settings.collection] -%}
+
+            {%- assign img_size = settings.img_size_large -%}
+            {% if section.settings.grid_number == '5' %}
+              {%- assign grid_item_width = 'col-lg-cus-5' -%}
+            {% else %}
+              {%- assign grid_item_width = 12 | divided_by: section.settings.grid_number | prepend: 'col-lg-' -%}
+            {% endif %}
+
+            {% if section.settings.grid_number_tablet == '5' %}
+              {%- assign col_tablet = 'col-md-cus-5' -%}
+            {% else %}
+              {%- assign col_tablet = 12 | divided_by: section.settings.grid_number_tablet | prepend: 'col-md-' -%}
+            {% endif %}
+
+            {%- assign col_mobile = 12 | divided_by: section.settings.grid_number_mobile | prepend: 'col-xs-' -%}
+
+
+            {%- assign product_limit = section.settings.grid_number | times: section.settings.row_number -%}
+            <div class="box-margin">
+              <div class="box-padding">
+              {% if section.settings.title != blank %}
+                <div class="title_block {{ section.settings.title_alignment }}">
+                  <div class="left">
+                    <span class="bground">
+                      <!-- <i class="material-icons">dehaze</i> -->
+                      {{ section.settings.title | nofilter }}
+                    </span>
+                    {% if section.settings.subheading != blank %}
+                      <span class="sub_title">{{ section.settings.subheading | escape }}</span>
+                    {% endif %}
+                  </div>
+                  <ul class="nav nav-tabs{% if section.settings.tab_align == 'center' %} {% elsif section.settings.tab_align == 'right' %} justify-content-end{% else %}{% endif %} flex-nowrap ml-auto" role="tablist">
+                    {% if section.settings.show_all_product == true %}
+                      <li class="nav-item ">
+                        <a class="nav-link active{% if section.settings.all_product_image_icon == blank %} text-center{% endif %}" href="#producttaball{{ section.id }}" role="tab" data-toggle="tab" data-parentID="#product-tabs-categories-{{ section.id }}" data-collection="all" data-numbergrid="{{ section.settings.grid_number }}" data-numberow="{{ section.settings.row_number }}" data-classitem="{{ grid_item_width }} {{ col_tablet }} {{ col_mobile }}" data-type_product="{{ section.settings.type_product }}">
+                          <span class="content-nav">
+                            {% if section.settings.all_product_image_icon != blank %}
+                            <img class="nav-imageicon" src="{{ section.settings.all_product_image_icon | img_url: '150x' }}" alt="{{ 'sections.collection_tabs.all_product' | t }}">
+                            {% endif %}
+                            <span>{{ 'sections.collection_tabs.all_product' | t }}</span>
+                          </span>
+                        </a>
+                      </li>
+                    {% endif %}
+                    {% for block in section.blocks %}        
+                    <li class="nav-item">
+                      <a class="nav-link {% if forloop.first and section.settings.show_all_product == false %} active{% endif %}" href="#producttab{{ forloop.index }}{{ section.id }}" role="tab" data-toggle="tab" data-parentID="#product-tabs-categories-{{ section.id }}" data-collection="{{ block.settings.collection_handle }}" data-numbergrid="{{ section.settings.grid_number }}" data-numberow="{{ section.settings.row_number }}" data-classitem="{{ grid_item_width }} {{ col_tablet }} {{ col_mobile }}" data-type_product="{{ section.settings.type_product }}">
+                        <span class="content-nav">
+                          {% if block.settings.image_icon != blank %}
+                          <img class="nav-imageicon" src="{{ block.settings.image_icon | img_url: '150x' }}" alt="{{ block.settings.tab_title }}">
+                          {% endif %}
+                          <span>{{ block.settings.tab_title }}</span>
+                        </span>
+                      </a>
+                    </li>
+                    {% endfor %}
+                  </ul>
+                </div>
+              {% endif %}
+
+                <div class="product_tab_content tab-content">
+                  {% if section.settings.tab_type == "grid" %}
+                    {% if section.settings.show_all_product == true %}
+                    <div id="producttaball{{ section.id }}" class="tab-pane fade show active" role="tabpanel">
+                      <div class="row grid--view-items no-gutters"></div>
+                    </div>
+                    {% endif %}
+                    {% for block in section.blocks %}
+                      {% if block.settings.collection_handle != '' %}
+                      <div id="producttab{{ forloop.index }}{{ section.id }}" class="tab-pane fade{% if forloop.first and section.settings.show_all_product == false %} show active{% endif %}" role="tabpanel">
+                        <div class="row grid--view-items no-gutters">
+                        </div>
+                      </div>
+                      {% endif %}
+                    {% endfor %}
+                    {% if  section.settings.show_load_more == true %}
+                      <div class="process-loading">
+                        <div class="loader">
+                          <div class="dot"></div>
+                          <div class="dot"></div>
+                          <div class="dot"></div>
+                          <div class="dot"></div>
+                          <div class="dot"></div>
+                        </div>
+                      </div>
+                      <div class="loadmore text-center" data-parentID="#product-tabs-categories-{{ section.id }}" data-loading="{{ 'sections.collection_tabs.loading' | t }}" data-page="{{ section.settings.row_number }}" data-loadmore="{{ 'sections.collection_tabs.loadmore_product' | t }}">
+                        <span>{{ 'sections.collection_tabs.loadmore_product' | t }}</span>
+                      </div>
+                    {% endif %}
+                  {% else %}
+                    {%- assign limit = product_limit | times: 3 -%}
+                    {% if section.settings.show_all_product == true %}
+                    <div id="producttaball{{ section.id }}" class="tab-pane fade show active" role="tabpanel">
+                      <div class="grid--view-items row nov-slick-carousel no-gutters"
+                        data-items="{{ section.settings.grid_number }}"
+                        data-items_lg_tablet="{{ section.settings.items_lg_tablet }}"
+                        data-items_tablet="{{ section.settings.grid_number_tablet }}"
+                        data-items_mobile="{{ section.settings.grid_number_mobile }}"
+                        data-row="{{ section.settings.row_number }}"
+                        data-loop="{{ section.settings.repeat_loop }}"
+                        data-dots="{{ section.settings.show_dots }}"
+                        data-nav="{{ section.settings.show_nav }}"
+                        data-autoplay="false"
+                        data-autoplayTimeout="6000">
+                      {% for product in collections.all.products limit:limit %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+                        <div class="item col">
+                          {% include 'product-card-grid', img_size: img_size, mr_bottom: 'mb-30' %}
+                        </div>
+                      {% endfor %}
+                      </div>
+                    </div>
+                    {% endif %}
+                    {% for block in section.blocks %}
+                      {%- assign category = block.settings.collection_handle -%}
+                      <div id="producttab{{ forloop.index }}{{ section.id }}" class="tab-pane fade{% if forloop.first and section.settings.show_all_product == false %} show active{% endif %}" role="tabpanel">
+                        <div class="grid--view-items row nov-slick-carousel no-gutters"
+                          data-items="{{ section.settings.grid_number }}"
+                          data-items_lg_tablet="{{ section.settings.items_lg_tablet }}"
+                          data-items_tablet="{{ section.settings.grid_number_tablet }}"
+                          data-items_mobile="{{ section.settings.grid_number_mobile }}"
+                          data-row="{{ section.settings.row_number }}"
+                          data-loop="{{ section.settings.repeat_loop }}"
+                          data-dots="{{ section.settings.show_dots }}"
+                          data-nav="{{ section.settings.show_nav }}"
+                          data-autoplay="false"
+                          data-autoplayTimeout="6000">
+                        {% for product in collections[category].products limit:limit %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+                          <div class="item col">
+                            {% include 'product-card-grid', img_size: img_size, mr_bottom: 'mb-40' %}
+                          </div>
+                        {% else %}
+                          {% for i in (1..limit) %}
+                            <div class="item col">
+                              <div class="item-product mb-40">
+                                <div class="thumbnail-container">
+                                  <a href="#">
+                                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                                  </a>
+                                </div>
+                                <div class="product__info text-center">
+                                  <div class="product__title"><a href="#">{{ 'homepage.onboarding.product_title' | t }}</a></div>
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        {% endfor %}
+                        </div>
+                      </div>
+                    {% endfor %}
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% if section.settings.has_fullwidth == false %}
+      </div>
+    {% endif %}
+  
+</div>
+{% schema %}
+  {
+    "name": "Vinova Collection Tabs",
+    "class": "index-section section-collection-tabs",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Vinova Collection Tabs"
+      },
+      {
+        "type": "text",
+        "id": "subheading",
+        "label": "Sub Heading",
+        "default": "Subtitle from happy customers"
+      },
+      {
+        "type": "checkbox",
+        "id": "inline",
+        "label": "Inline",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "title_alignment",
+        "label": "Title alignment",
+        "default": "text-left",
+        "options": [
+          {
+            "value": "text-left",
+            "label": "Left"
+          },
+          {
+            "value": "text-center",
+            "label": "Center"
+          },
+          {
+            "value": "text-right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number",
+        "label": "Products per row",
+        "default": "4",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "items_lg_tablet",
+        "label": "Products Desktop",
+        "default": "4",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number_tablet",
+        "label": "Products per row (tablet)",
+        "default": "3",
+        "options": [
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number_mobile",
+        "label": "Products per row (mobile)",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "row_number",
+        "label": "Number row",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ]
+      },
+      {
+        "type":  "header",
+        "content": "Design Option"
+      },
+      {
+        "type": "text",
+        "id": "class",
+        "label": "Class"
+      },
+      {
+        "type": "select",
+        "id": "tab_align",
+        "label": "Tab Align",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "style_tabs",
+        "label": "Style Nav Tabs",
+        "options": [
+          {
+            "value": "tab_style_1",
+            "label": "1"
+          },
+          {
+            "value": "tab_style_2",
+            "label": "2"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "tab_type",
+        "label": "Tab View Type",
+        "default": "grid",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid View"
+          },
+          {
+            "value": "slider",
+            "label": "Slider View"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_load_more",
+        "label": "Show Loadmore",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_dots",
+        "label": "Show Dots (Only with Slider View)",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show Navigation (Only with Slider View)",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_all_product",
+        "label": "Show 'All product' tab",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_product_type",
+        "label": "Show Product Type",
+        "default": false
+      },
+      {
+        "type": "image_picker",
+        "id": "all_product_image_icon",
+        "label": "Image Icon with All product"
+      },
+      {
+        "type": "select",
+        "id": "type_product",
+        "label": "Type Product",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "repeat_loop",
+        "label": "Repeat Loop",
+        "options": [
+          {
+            "value": "true",
+            "label": "true"
+          },
+          {
+            "value": "false",
+            "label": "false"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "Policy 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_1",
+        "label": "Policy Icon 1"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_1",
+        "label": "Title Policy 1"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_1",
+        "label": "Desc Policy 1"
+      },
+      {
+        "type": "header",
+        "content": "Policy 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_2",
+        "label": "Policy Icon 2"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_2",
+        "label": "Title Policy 2"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_2",
+        "label": "Desc Policy 2"
+      },
+      {
+        "type": "header",
+        "content": "Policy 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_3",
+        "label": "Policy Icon 3"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_3",
+        "label": "Title Policy 3"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_3",
+        "label": "Desc Policy 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "img_1",
+        "label": "Image 1"
+      },
+      {
+        "type": "url",
+        "id":  "link_img1",
+        "label": "Link Img 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "img_2",
+        "label": "Image 2"
+      },
+      {
+        "type": "url",
+        "id":  "link_img2",
+        "label": "Link Img 2"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default":   false
+      },
+      {
+        "type": "text",
+        "id": "distance_top",
+        "label": "Top Distance Section",
+        "default": "30px"
+      },
+      {
+        "type": "text",
+        "id": "distance_bottom",
+        "label": "Bottom Distance Section",
+        "default": "30px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "tabitem",
+        "name": "Tab Item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "tab_title",
+            "label": "Tab Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "image_icon",
+            "label": "Image Icon"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Collection Tabs",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type":"tabitem",
+            "settings":{
+              "tab_title": "Tab one",
+              "image_icon": "",
+              "collection_handle": "frontpage"
+            }
+          },
+          {
+            "type":"tabitem",
+            "settings":{
+              "tab_title": "Tab Two",
+              "image_icon": "",
+              "collection_handle": "frontpage"
+            }
+          },
+          {
+            "type":"tabitem",
+            "settings":{
+              "tab_title": "Tab Three",
+              "image_icon": "",
+              "collection_handle": "frontpage"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,376 @@
+<div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}">
+  <div data-section-id="{{ section.id }}" data-section-type="nov-slick" >
+    <div class="page-width nov-group-product-list{% if section.settings.class != blank %} {{ section.settings.class | escape }}{% endif %}">
+      {% if section.settings.has_fullwidth == false %}
+      <div class="container">
+      {% endif %}
+      
+        {% if section.blocks.size > 0 %}
+          {% case section.blocks.size %}
+            {% when 1 %}
+              {%- assign class_grid = 'col-lg-12 col-md-12 mb-xs-30' -%}
+            {% when 2 %}
+              {%- assign class_grid = 'col-lg-6 col-md-6 mb-xs-30' -%}
+            {% when 3 %}
+              {%- assign class_grid = 'col-lg-4 col-md-12 mb-xs-30' -%}
+            {% when 4 %}
+              {%- assign class_grid = 'col-lg-3 col-md-6 mb-xs-30' -%}
+          {% endcase %}
+          <div class="row">
+            {% for block in section.blocks %}
+              <div class="{{ class_grid }} mt-md-30">
+                <div class="block">
+                  <div class="title_block text-left">
+                    {% if block.settings.subheading != blank %}
+                      <span class="sub_title">{{ block.settings.subheading | escape }}</span>
+                    {% endif %}                  
+                    <span>{{ block.settings.title | escape  }}</span>
+                  </div>
+                  <div class="block-content">
+                    <div class="nav_top nov-slick-carousel"
+                      data-items="{{ section.settings.grid_number }}"
+                      data-items_tablet="{{ section.settings.grid_number_tablet }}"
+                      data-items_lg_tablet="{{ section.settings.grid_number_lg_tablet }}"
+                      data-items_mobile="{{ section.settings.grid_number_mobile }}"
+                      data-row="{{ section.settings.row_number }}"
+                      data-loop="true"
+                      data-dots="{{ section.settings.show_dots }}"
+                      data-nav="{{ section.settings.show_nav }}"
+                      data-autoplay="false"
+                      data-autoplayTimeout="6000">
+                      {%- assign category = block.settings.collection_handle -%}
+                      {% for product in collections[category].products limit:section.settings.limit %}
+                      <div class="item">
+                        <div class="item-product d-flex{% if forloop.last == false %} mb-30{% endif %}">
+                          <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                            <a href="{{ product.url | within: collection }}">
+                              <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '110x' }}" alt="{{ product.featured_image.alt | escape }}">
+                              {% for image in product.images %}
+                                {% if forloop.first != true %}
+                                  <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '110x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                  {% break %}
+                                {% endif %}
+                              {% endfor %}
+                            </a>
+                          </div>
+
+                          <div class="product__info ml-30 ml-md-10">
+                            <div class="product__review mb-5">
+                              <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                            </div>
+                            <div class="product__title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                            <div class="product__price">
+                              {% include 'product-price' %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+
+      {% if section.settings.has_fullwidth == false %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Vinova Group List Product",
+    "class": "index-section section-group-product-list",
+    "max_blocks": 4,
+    "settings": [
+      {
+        "type": "select",
+        "id": "limit",
+        "label": "Number Product Show",
+        "default": "3",
+        "options": [
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "7",
+            "label": "7"
+          },
+          {
+            "value": "8",
+            "label": "8"
+          },
+          {
+            "value": "9",
+            "label": "9"
+          },
+          {
+            "value": "10",
+            "label": "10"
+          },
+          {
+            "value": "11",
+            "label": "11"
+          },
+          {
+            "value": "12",
+            "label": "12"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number",
+        "label": "Products per row ( Large Desktop )",
+        "default": "3",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number_lg_tablet",
+        "label": "Products per row (Desktop)",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number_tablet",
+        "label": "Products per row (tablet)",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          },
+          {
+            "value": "7",
+            "label": "7"
+          },
+          {
+            "value": "8",
+            "label": "8"
+          },
+          {
+            "value": "9",
+            "label": "9"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "grid_number_mobile",
+        "label": "Products per row (mobile)",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "row_number",
+        "label": "Number row",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "show_nav",
+        "label": "Show Navigation",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "class",
+        "label": "Class"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default":   false
+      },
+      {
+        "type": "text",
+        "id": "distance_top",
+        "label": "Top Distance Section",
+        "default": "30px"
+      },
+      {
+        "type": "text",
+        "id": "distance_bottom",
+        "label": "Bottom Distance Section",
+        "default": "30px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "list_product",
+        "name": "Product List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Product List title"
+          },
+          {
+            "type": "text",
+            "id": "subheading",
+            "label": "Product List"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Vinova Group List Product",
+        "category": "Collection",
+        "blocks": [
+          {
+            "type":"list_product",
+            "settings":{
+              "title": "Product List 1",
+              "subheading": "Our trending products",
+              "collection_handle": "frontpage"
+            }
+          },
+          {
+            "type":"list_product",
+            "settings":{
+              "title": "Product List 2",
+              "subheading": "Our trending products",
+              "collection_handle": "frontpage"
+            }
+          },
+          {
+            "type":"list_product",
+            "settings":{
+              "title": "Product List 3",
+              "subheading": "Our trending products",
+              "collection_handle": "frontpage"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

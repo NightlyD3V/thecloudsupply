@@ -1,0 +1,54 @@
+<div id="mobile-blockcart" class="mobile-boxpage d-flex d-md-none">
+    <div class="content-boxpage col">
+      <div class="box-header d-flex justify-content-between align-items-center">
+          <div class="title-box">Cart</div>
+          <div class="close-box">Close</div>
+      </div>
+      <div id="_mobile_cart" class="box-content"></div>
+    </div>
+</div>
+
+<div id="mobile-pageaccount" class="mobile-boxpage d-flex d-md-none" data-titlebox-parent="Account">
+  <div class="content-boxpage col">
+    <div class="box-header d-flex justify-content-between align-items-center">
+        <div class="back-box">Back</div>
+        <div class="title-box">Account</div>
+        <div class="close-box">Close</div>
+    </div>
+    <div class="box-content d-flex justify-content-center align-items-center text-center">
+      <div>
+        <div id="_mobile_account_list"></div>
+        {% if settings.show_multiple_currencies == true %}
+        <div class="links-currency" data-target="#box-currency" data-titlebox="Currency"><span>Currency</span><i class="zmdi zmdi-arrow-right"></i></div>
+        {% endif %}
+        {% if settings.show_multiple_language == true %}
+        <div class="links-language" data-target="#box-language" data-titlebox="Language"><span>Language</span><i class="zmdi zmdi-arrow-right"></i></div>
+        {% endif %}
+      </div>
+    </div>
+    {% if settings.show_multiple_currencies == true %}
+    <div id="box-currency" class="box-content list-unstyled">
+      <div id="_mobile_currency_selector" class="currency-selector groups-selector"></div>
+    </div>
+    {% endif %}
+    {% if settings.show_multiple_language == true %}
+    <div id="box-language" class="box-content list-unstyled">
+        {% comment %}
+        {foreach from=$nov_languages.languages item=language}
+          <div class="item-language{if $language.id_lang == $nov_languages.current_language.id_lang} current{/if}">
+            <a href="{url entity='language' id=$language.id_lang}" class="d-flex align-items-center"><img class="img-fluid mr-2" src="{$img_lang nofilter}{$language.id_lang}.jpg" alt="{$language.name}" width="16" height="11" /><span>{$language.name_simple}</span></a>
+          </div>
+        {/foreach}
+        {% endcomment %}
+    </div>
+    {% endif %}
+  </div>
+</div>
+
+<div id="stickymenu_bottom_mobile" class="d-flex align-items-center justify-content-center d-md-none text-center">
+  <div class="stickymenu-item"><a href="/"><i class="zmdi zmdi-home"></i><span>Home</span></a></div>
+  <div class="stickymenu-item"><a href="#" class="js-btn-search"><i class="zmdi zmdi-search"></i><span>Search</span></a></div>
+  <div class="stickymenu-item"><a href="#" class="nov-toggle-page" data-target="#mobile-blockcart"><span class="cart-products-count">{{ cart.item_count }}</span><i class="zmdi zmdi-shopping-cart"></i><span>Cart</span></a></div>
+  <div class="stickymenu-item"><a href="#swym-wishlist"><i class="zmdi zmdi-favorite-outline"></i><span>Wishlist</span></a></div>
+  <div class="stickymenu-item"><a href="#" class="nov-toggle-page" data-target="#mobile-pageaccount"><i class="zmdi zmdi-account-o"></i><span>Account</span></a></div>
+</div>

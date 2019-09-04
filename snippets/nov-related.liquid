@@ -1,0 +1,42 @@
+{% assign novCol = 4 %}
+{% assign novLimit = 10 %}
+{% assign currentProduct = product %}
+{% if collection == null or collection.handle == 'all' %}
+    {% assign foundCollection = false %}
+    {% for item in product.collections %}
+        {% if foundCollection == false and item.handle != 'all' and item.all_products_count > 1 %}
+            {% assign foundCollection = true %}
+            {% assign collection = item %}
+        {% endif %}
+    {% endfor %}
+{% endif %}
+{% if collection and collection.products_count > 1 %}
+    <div class="ProductRelated box-margin">
+        <div class="box-padding">
+            <div class="title_block">{{ 'products.product.related' | t }}</div>
+            <div class="block__content">
+                <div class="grid grid--view-items">
+                    <div class="owl-relatedproduct owl-carousel owl-drag" 
+                        data-autoplay="false" data-autoplayTimeout="6000" 
+                        data-margin="30"
+                        data-nav="{{ section.settings.show_nav }}"
+                        data-dots="{{ section.settings.show_dots }}"
+                        data-loop="{{ section.settings.repeat_loop }}"
+                        data-items="{% if viewtype == 'has_sidebar' %}{{ section.settings.grid_number_has_sidebar }}{% else %}{{ section.settings.grid_number_nosidebar }}{% endif %}"
+                        data-items_lg_tablet="{{ section.settings.grid_number_lg_tablet }}"
+                        data-items_tablet="{{ section.settings.grid_number_tablet }}"
+                        data-items_mobile="{{ section.settings.grid_number_mobile }}">
+                        {% for product in collection.products limit:novLimit %}
+{%- include 'bold-product' with product, hide_action: 'skip' -%}
+                            {% unless product.handle == currentProduct.handle %}
+                                <div class="item">
+                                    {% include 'product-card-grid', img_size : settings.img_size %}
+                                </div>
+                            {% endunless %}
+                        {% endfor %}
+                    </div>                    
+                </div>
+            </div>
+        </div>
+    </div>
+{% endif %}

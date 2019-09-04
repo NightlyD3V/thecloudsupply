@@ -1,0 +1,88 @@
+<div class="product_scale">
+  <div class="product_scale_down">
+    <div class="item-product item-animate{% if section.settings.type_product == '1' or block.settings.type_product == '1' %} type_1{% endif %}{% if section.settings.type_product == '2' or block.settings.type_product == '2' %} type_2 pt-15{% endif %}{% if section.settings.type_product == '3' or block.settings.type_product == '3' %} type_3{% endif %}{% unless product.available %} product-price--sold-out{% endunless %}{% unless mr_bottom %} {{ mr_bottom }}{% endunless %}">
+      <div class="content_scale_down">
+        <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+          <a href="{{ product.url | within: collection }}">
+            <img class="img-fluid product__thumbnail image-cover lazyload" src="{{ product.featured_image | product_img_url: img_size }}" alt="{{ product.featured_image.alt | escape }}">
+            {% for image in product.images %}
+              {% if forloop.first != true %}
+                  <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: img_size }}" alt="{{ product.featured_image.alt | escape }}">
+                  {% break %}
+              {% endif %}
+            {% endfor %}
+          </a>
+        </div>
+        {% comment %}
+        {% if bold_compare_at_price > bold_price %}
+          <span class="badge badge--sale">{{ bold_price | times: 100.0 | divided_by: bold_compare_at_price }}%</span>
+        {% endif %}
+        {% endcomment %}
+        {% if bold_compare_at_price > bold_price %}
+          <div class="badge badge--sale">{{ 'products.product.on_sale' | t }}</div>
+        {% endif %}
+        {% if section.settings.type_product == '1' or block.settings.type_product == '1' %}
+          <div class="product__info__top">
+            {% if section.settings.show_product_type == true or block.settings.show_product_type == true %}
+              {% if product.type != empty %}
+                <div class="text-uppercase mb-5 type_product">{{ product.type | link_to_type }}</div>
+              {% endif %}
+            {% endif %}
+            <div class="product__title">
+              <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+            </div>
+          </div>
+        {% endif %}
+        <div class="product__info">
+          <div class="product-group">
+            {% if section.settings.type_product == '1' or block.settings.type_product == '1' %}
+              {% if settings.show_rating %}
+              <div class="product__review">
+                <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+              </div>
+              {% endif %}
+              <div class="product__price">
+                {% include 'product-price' %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.type_product == '2' or block.settings.type_product == '2' %}
+              {% if settings.show_rating %}
+              <div class="product__review">
+                <div class="rating">
+                  <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                  <span class="spr-badge-caption">No reviews</span>
+                </div>
+              </div>
+              {% endif %}
+              <div class="product__title">
+                <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+              </div>
+              <div class="product__price">
+                {% include 'product-price' %}
+              </div>
+            {% endif %}
+
+            {% if section.settings.type_product == '3' or block.settings.type_product == '3' %}
+              {% if settings.show_rating %}
+              <div class="product__review">
+                <div class="rating">
+                  <span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span>
+                  <span class="spr-badge-caption">No reviews</span>
+                </div>
+              </div>
+              {% endif %}
+              <div class="product__title">
+                <a href="{{ product.url | within: collection }}">{{ product.title }}</a>
+              </div>
+              <div class="product__price">
+                {% include 'product-price' %}
+              </div>
+            {% endif %}
+            {% include 'group_buttons' %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

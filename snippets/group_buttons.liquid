@@ -1,0 +1,48 @@
+<div class="group-buttons d-flex{% if justify.size > 0 %} {{ justify }}{% endif %}">
+  {% assign variantCount = bold_variants_size %}
+  <form class="formAddToCart" action="/cart/add" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="id" value="{{ bold_selected_or_first_available_variant.id }}" />
+{%- unless qb_loaded == 'true' -%}
+<div class='shappify-qty-msg'>{{bold_selected_or_first_available_variant.metafields.shappify_csp.pricing_html}}</div>
+{%- assign qb_loaded = 'true' -%}
+{%- endunless -%}
+
+    {% if sold_out %}
+      <button class="btn btnAddToCart disabled" type="submit" value="Submit" data-handle="{{ product.handle }}" data-toggle="tooltip" data-placement="top" title="{{ 'products.product.sold_out' | t }}" disabled>
+        <i class="zmdi zmdi-block-alt"></i>
+      </button>
+    {% else %}
+      {% if variantCount > 1 %}
+        <a class="btn btnAddToCart" href="{{ product.url }}" data-toggle="tooltip" data-placement="top" title="{{ 'products.product.select_options' | t }}">
+          <i class="zmdi zmdi-check"></i>
+          <span>{{ 'products.product.select_options' | t }}</span>
+        </a>
+      {% else %}
+        <button class="btn btnAddToCart" type="submit" value="Submit" data-handle="{{ product.handle }}" data-toggle="tooltip" data-placement="top" title="{{ 'products.product.add_to_cart' | t }}">
+          <i class="icon-addcart"></i>
+          <span>{{ 'products.product.add_to_cart' | t }}</span>
+        </button>
+      {% endif %}
+    {% endif %}
+  </form>
+  <div class="btn-group-act ml-auto">
+    <i class="zmdi zmdi-more"></i>
+  </div>
+  <div class="product-button">
+    {% if settings.wishlist_enable %}
+      <div class="productWishList">
+        {% include 'swym-product-view', product: product %}
+        <a href="#" class="btn btnProduct btnProductWishlist swym-button swym-add-to-wishlist-view-product product_{{product.id}}" data-swaction="addToWishlist" data-product-id="{{product.id | json}}" data-toggle="tooltip" data-placement="top" title="{{ 'products.butttons.wishlist' | t }}">
+        </a>
+      </div>
+    {% endif %}
+    
+    {% if settings.quickview_enable %}
+      <div class="productQuickView">
+        <a class="btn btnProduct btnProductQuickview" href="#" data-handle="{{ product.handle }}" data-toggle="tooltip" data-placement="top" title="{{ 'products.butttons.quickview' | t }}">
+          <i class="fa fa-search"></i>
+        </a>
+      </div>
+    {% endif %}
+  </div>
+</div>

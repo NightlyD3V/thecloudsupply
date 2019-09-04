@@ -1,0 +1,82 @@
+
+{% if section.settings.color != blank %}
+<style>
+  .section-separator-{{ section.id }} .separator-line {
+    {% if section.settings.color != blank %}
+      background-color: {{ section.settings.color }};
+      min-height: 1px;
+      width: {{ section.settings.width }}%;
+    {% endif %}
+  }
+</style>
+{% endif %}
+
+<div class="page-width section-separator-{{ section.id }}{% if section.settings.class != blank %} {{ section.settings.class }}{% endif %}" data-section-id="{{ section.id }}">
+    {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+    {% endif %}
+      <div class="separator-line"></div>
+    {% if section.settings.has_fullwidth == false %}
+    </div>
+    {% endif %}
+</div>
+{% schema %}
+  {
+    "name": "Vinova Separator",
+    "class": "index-section section-separator",
+    "settings": [
+      {
+        "type": "color",
+        "id": "color",
+        "label": "Color"
+      },
+      {
+        "type": "range",
+        "id": "width",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "unit": "%",
+        "label": "Width",
+        "default": 100
+      },
+      {
+        "type": "select",
+        "id": "align",
+        "label": "Align",
+        "default": "center",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "class",
+        "label": "Class"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default": false
+      }
+    ],
+    "presets": [
+      {
+        "name": "Separator",
+        "category": "Text"
+      }
+    ]
+  }
+{% endschema %}

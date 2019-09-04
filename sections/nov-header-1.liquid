@@ -1,0 +1,719 @@
+<div data-section-id="{{ section.id }}" data-section-type="header-section">
+  <header class="site-header header-1{% if section.settings.stickymenu == true %} sticky-menu{% endif %}">
+    {% include 'header-1' %}
+  </header>
+</div>
+
+{% schema %}
+  {
+    "name": "Header 1",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo image"
+      },
+      {
+        "type": "image_picker",
+        "id": "logo_mobile",
+        "label": "Logo Mobile Image"
+      },
+      {
+        "type": "text",
+        "id": "logo_max_width",
+        "label": "Custom logo width (in pixels)",
+        "default": "150"
+      },
+      {
+        "type": "text",
+        "id": "email",
+        "label": "Email"
+      },
+      {
+        "type": "url",
+        "id": "email_link",
+        "label": "Link Email"
+      },
+      {
+        "type": "text",
+        "id": "phone",
+        "label": "Phone Number"
+      },
+      {
+        "type": "url",
+        "id": "phone_link",
+        "label": "Link Phone Number"
+      },
+      {
+        "type": "header",
+        "content": "Vinova Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "novmenu_enable",
+        "label": "Enable Megamenu",
+        "info": "Acitve Vinova Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_icon",
+        "label": "Enable Icon",
+        "info": "Acitve Icon Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "stickymenu",
+        "label": "Enable Sticky Menu"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_policy",
+        "label": "Show Policy Menu",
+        "default": true
+      },
+      {
+        "type": "link_list",
+        "id": "main_linklist",
+        "label": "Menu",
+        "default": "main-menu"
+      },
+      {
+        "type": "link_list",
+        "id": "vertical_menu",
+        "label": "Vertical Menu"
+      },
+      {
+        "type": "range",
+        "id": "show_more",
+        "min": 1,
+        "max": 10,
+        "label": "Number Item Menu Vertical",
+         "default": 1
+      },
+      {
+        "type": "range",
+        "id": "show_more_tablet",
+        "min": 1,
+        "max": 10,
+        "label": "Number Item Menu Vertical Tablet",
+         "default": 1
+      },
+      {
+        "type": "header",
+        "content": "Policy 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_1",
+        "label": "Policy Icon 1"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_1",
+        "label": "Title Policy 1"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_1",
+        "label": "Desc Policy 1"
+      },
+      {
+        "type": "header",
+        "content": "Policy 2"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_2",
+        "label": "Policy Icon 2"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_2",
+        "label": "Title Policy 2"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_2",
+        "label": "Desc Policy 2"
+      },
+      {
+        "type": "header",
+        "content": "Policy 3"
+      },
+      {
+        "type": "image_picker",
+        "id": "policy_icon_3",
+        "label": "Policy Icon 3"
+      },
+      {
+        "type": "text",
+        "id": "title_policy_3",
+        "label": "Title Policy 3"
+      },
+      {
+        "type": "text",
+        "id": "desc_policy_3",
+        "label": "Desc Policy 3"
+      },
+      {
+        "type": "select",
+        "id": "width",
+        "label": "Width Policy",
+        "options": [
+          {
+            "value": "col-lg-2",
+            "label": "2/12"
+          },
+          {
+            "value": "col-lg-3",
+            "label": "3/12"
+          },
+          {
+            "value": "col-lg-4",
+            "label": "4/12"
+          },
+          {
+            "value": "col-lg-6",
+            "label": "6/12"
+          },                  
+          {
+            "value": "col-lg-12",
+            "label": "12/12"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "width_tablet",
+        "label": "Width Policy Policy(Tablet)",
+        "options": [
+          {
+            "value": "col-md-2",
+            "label": "2/12"
+          },
+          {
+            "value": "col-md-3",
+            "label": "3/12"
+          },
+          {
+            "value": "col-md-4",
+            "label": "4/12"
+          },
+          {
+            "value": "col-md-6",
+            "label": "6/12"
+          },
+          {
+            "value": "col-md-12",
+            "label": "12/12"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "width_mobile",
+        "label": "Width Policy(Mobile)",
+        "options": [
+          {
+            "value": "col-xs-2",
+            "label": "2/12"
+          },
+          {
+            "value": "col-xs-3",
+            "label": "3/12"
+          },
+          {
+            "value": "col-xs-4",
+            "label": "4/12"
+          },
+          {
+            "value": "col-xs-6",
+            "label": "6/12"
+          },                
+          {
+            "value": "col-xs-12",
+            "label": "12/12"
+          }
+        ]
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Megamenu Item",
+        "settings": [
+          {
+            "type": "text",
+            "id": "novmenu_item",
+            "label": "Menu item name",
+            "info": "Menu item of main-menu. Menu item has dropdown megamenu."
+          },
+          {
+            "type": "text",
+            "id": "submenu_width",
+            "label": "Submenu Width (px)"
+          },
+          {
+            "type": "image_picker",
+            "id": "icon_menu",
+            "label": "Icon Menu"
+          },
+          {
+            "type": "text",
+            "id": "sub_title_menu",
+            "label": "Sub title menu"
+          },
+          {
+            "type": "image_picker",
+            "id": "img_bg",
+            "label": "background image for block"
+          },
+          {
+            "type": "header",
+            "content": "Block navigation",
+            "info": "Admin -> Navigation -> Menu. Position:1"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_menu_enable",
+            "label": "Enable navigation"
+          },
+          {
+            "type": "select",
+            "id": "novmenu_menu_col",
+            "label": "Width on megamenu",
+            "default": "col-lg-3",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_menu_col_tablet",
+            "label": "Width on megamenu Tablet",
+            "default": "col-md-3",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_menu_menucol",
+            "label": "Width Fisrt Children Menu On Megamenu",
+            "default": "col-lg-3",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_menu_menucol_tablet",
+            "label": "Width Fisrt Children Menu On Megamenu Tablet",
+            "default": "col-md-3",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },                
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "header",
+            "content": "Block Banner"
+          },
+          {
+            "type": "checkbox",
+            "id": "img_shadow",
+            "label": "Banner Shadow",
+            "default": false
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 1",
+            "info": "Position:1"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable1",
+            "label": "Enable Banner 1"
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col1",
+            "label": "Width on megamenu",
+            "default": "col-lg-4",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },               
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col1_tablet",
+            "label": "Width on megamenu Tablet",
+            "default": "col-md-4",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "image_size1",
+            "label": "Image Size Banner 1",
+            "default": "255x300",
+            "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner1",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link1",
+            "label": "Banner Link"
+          },
+          {
+            "type": "text",
+            "id": "image_size_1",
+            "label": "Image Size Banner",
+            "default": "255x300",
+            "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner_1",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link_1",
+            "label": "Banner Link"
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 2",
+            "info": "Position:2"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable2",
+            "label": "Enable Banner 2"
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col2",
+            "label": "Width on megamenu",
+            "default": "col-lg-4",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col2_tablet",
+            "label": "Width on megamenu Tablet",
+            "default": "col-md-4",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "image_size2",
+            "label": "Image Size Banner 2",
+            "default": "255x300",
+            "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner2",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link2",
+            "label": "Banner Link"
+          },
+          {
+            "type": "header",
+            "content": "Block Banner 3",
+            "info": "Position:3"
+          },
+          {
+            "type": "checkbox",
+            "id": "novmenu_banner_enable3",
+            "label": "Enable Banner 3"
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col3",
+            "label": "Width on megamenu",
+            "default": "col-lg-4",
+            "options": [
+              { 
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },                  
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "novmenu_banner_col3_tablet",
+            "label": "Width on megamenu Tablet",
+            "default": "col-md-4",
+            "options": [
+              { 
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },                  
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "image_size3",
+            "label": "Image Size Banner 3",
+            "default": "255x300",
+            "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+          },
+          {
+            "type": "image_picker",
+            "id": "novmenu_banner3",
+            "label": "Banner image"
+          },
+          {
+            "type": "text",
+            "id": "novmenu_banner_link3",
+            "label": "Banner Link"
+          }           
+        ]
+      },
+      {
+        "type": "icon_menu",
+        "name": "Icon Menu",
+        "settings": [
+          {
+            "type": "text",
+            "id": "name_item",
+            "label": "Menu item name",
+            "info": "Menu item of main-menu. Menu item has dropdown megamenu."
+          },
+          {
+            "type": "image_picker",
+            "id": "icon_menu_2",
+            "label": "Icon Menu"
+          },
+          {
+            "type": "text",
+            "id": "sub_title_menu_2",
+            "label": "Sub title menu"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

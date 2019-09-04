@@ -1,0 +1,230 @@
+{% if template == "blog.list" %}
+  {% assign viewtype = 'list' %}
+{% elsif template == "blog.column" %}
+  {% assign viewtype = 'column' %}
+{% else %}
+  {% if section.settings.layout == 'list' %}
+    {% assign viewtype = 'list' %}
+  {% elsif section.settings.layout == 'column' %}
+    {% assign viewtype = 'column' %}
+  {% else %}
+    {% assign viewtype = 'grid' %}
+  {% endif %}
+{% endif %}
+
+{% paginate blog.articles by section.settings.page_show %}
+
+<div class="blog--list {% if viewtype == 'list' %}blog--list-view{% elsif viewtype == 'column' %}blog--column-view{% else %}blog--grid-view{% endif %}">
+  {%comment%}
+  <div class="title_block">{{ blog.title }}</div>
+  {%endcomment%}
+  {% if viewtype == 'grid' %}
+    <div class="row">
+    {% for article in blog.articles %}
+      <div class="article--listing col-lg-12">
+        <div class="article__image mb-30">
+          {% if article.image %}
+            <a href="{{ article.url }}" class="article__list-image-container">
+              <img class="article__list-image lazyload"
+                  src="{{ article.image | img_url: '1200x' }}"
+                  alt="{{ article.image.alt | escape }}">
+            </a>
+
+          {% endif %}
+        </div>
+        <div class="article-body">
+          <h2 class="article__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+          <div class="article__info">
+            {% if section.settings.blog_show_date %}
+              <span class="article__date">
+                <i class="zmdi zmdi-calendar-note"></i>{{ article.published_at | time_tag: format: 'month_day_year' }}
+              </span>
+            {% endif %}
+
+            {% if section.settings.blog_show_comment %}
+              {% if blog.comments_enabled? %}
+                <span class="article__countcomment">
+                  <i class="zmdi zmdi-comments"></i>{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                </span>
+              {% endif %}
+            {% endif %}
+
+            {% if section.settings.blog_show_author %}
+              <span class="article__author"><i class="zmdi zmdi-account"></i>{{ article.author }}</span>
+            {% endif %}
+          </div>
+
+          <div class="article__excerpt">
+            {% if article.excerpt.size > 0 %}
+              {{ article.excerpt }}
+            {% else %}
+              {{ article.content | strip_html | truncate: 500 }}
+            {% endif %}
+            <a href="{{ article.url }}" class="article__readmore text-lowercase">{{ 'blogs.article.view_more' | t }}</a>
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+    </div>
+  {% elsif viewtype == 'column' %}
+    <div class="row">
+    {% for article in blog.articles %}
+      <div class="article--listing col-md-6 col-xl-6 mb-10">
+        <div class="block_content">
+          <div class="article__image mb-20">
+            {% if article.image %}
+              <a href="{{ article.url }}" class="article__list-image-container">
+                <img class="article__list-image lazyload"
+                    src="{{ article.image | img_url: '1200x' }}"
+                    alt="{{ article.image.alt | escape }}">
+              </a>
+
+            {% endif %}
+          </div>
+          <div class="article-body">
+            <h2 class="article__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+            
+            <div class="article__info">
+              {% if section.settings.blog_show_date %}
+                <span class="article__date">
+                  <i class="zmdi zmdi-calendar-note"></i>{{ article.published_at | time_tag: format: 'month_day_year' }}
+                </span>
+              {% endif %}
+
+              {% if section.settings.blog_show_comment %}
+                {% if blog.comments_enabled? %}
+                  <span class="article__countcomment">
+                    <i class="zmdi zmdi-comments"></i>{{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                  </span>
+                {% endif %}
+              {% endif %}
+              
+              {% if section.settings.blog_show_author %}
+                <span class="article__author"><i class="zmdi zmdi-account"></i>{{ article.author }}</span>
+              {% endif %}
+            </div>
+
+            <div class="article__excerpt mb-25">
+              {% if article.excerpt.size > 0 %}
+                {{ article.excerpt | strip_html | truncate: 244 }}
+              {% else %}
+                {{ article.content | strip_html | truncate: 244 }}
+              {% endif %}
+            </div>
+            {%comment%}<a href="{{ article.url }}" class="article__readmore text-uppercase">{{ 'blogs.article.readmore' | t }}</a>{%endcomment%}
+          </div>
+        </div>
+      </div>
+    {% endfor %}
+  {% else %}
+    {% for article in blog.articles %}
+      <div class="article--listing media">
+        <div class="mr-30">
+          {% if article.image %}
+            <a href="{{ article.url }}" class="article__list-image-container">
+              <img class="article__list-image lazyload"
+                   src="{{ article.image | img_url: '370x370' }}"
+                   alt="{{ article.image.alt | escape }}">
+            </a>
+          {% endif %}
+        </div>
+        <div class="media-body">
+          <h2 class="article__title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+          <div class="article__info mb-15">
+            {% if section.settings.blog_show_date %}
+              <span class="article__date">
+                <i class="zmdi zmdi-calendar-note"></i>
+                {{ article.published_at | time_tag: format: 'month_day_year' }}
+              </span>
+            {% endif %}
+
+            {% if section.settings.blog_show_comment %}
+              {% if blog.comments_enabled? %}
+                <span class="article__countcomment">
+                  <i class="zmdi zmdi-comment-alt"></i>
+                  {{ 'blogs.comments.comments_with_count' | t: count: article.comments_count }}
+                </span>
+              {% endif %}
+            {% endif %}
+
+            {% if section.settings.blog_show_author %}
+              <span class="article__author"><i class="zmdi zmdi-account"></i>{{ article.author }}</span>
+            {% endif %}
+          </div>
+
+          <div class="article__excerpt">
+            {% if article.excerpt.size > 0 %}
+              {{ article.excerpt }}
+            {% else %}
+              {{ article.content | strip_html | truncate: 150 }}
+            {% endif %}
+          </div>
+          <a href="{{ article.url }}" class="article__readmore text-uppercase">{{ 'blogs.article.readmore' | t }}</a>
+        </div>
+      </div>
+    {% endfor %}
+  {% endif %}
+
+  {% if paginate.pages > 1 %}
+  <div class="col-lg-12 nov-pagination d-flex align-items-center">
+    {% include 'pagination' %}
+  </div>
+  {% endif %}
+</div>
+
+{% endpaginate %}
+
+{% schema %}
+  {
+    "name": "Blog pages",
+    "settings": [
+      {
+        "type": "select",
+        "id": "layout",
+        "label": "Layout",
+        "default": "list",
+        "options": [
+          {
+            "value": "grid",
+            "label": "Grid"
+          },
+          {
+            "value": "list",
+            "label": "List"
+          },
+          {
+            "value": "column",
+            "label": "Column"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_author",
+        "label": "Show author",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_date",
+        "label": "Show date",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "blog_show_comment",
+        "label": "Show Comment",
+        "default": true
+      },
+      {
+        "type": "range",
+        "id": "page_show",
+        "min": 1,
+        "max": 15,
+        "step": 1,
+        "label": "Number of post per page",
+        "default": 3
+      }
+    ]
+  }
+{% endschema %}

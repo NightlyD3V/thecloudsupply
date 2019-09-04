@@ -1,0 +1,361 @@
+<div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}">
+
+  <div class="{{ section.settings.class}}" data-section-id="{{ section.id }}" data-section-type="nov-slick">
+    {% if section.settings.has_fullwidth == false %}
+      <div class="container">
+    {% endif %}
+      <div class="row">
+        <div class="col-lg-3 banner-deal">
+          <div class="gallery-image">
+            <div class="gallery-image__item">
+              <a href="{{ section.settings.link_img1 }}"><img class="mb-10" src="{{ section.settings.img_1 | img_url: '1920x' }}" alt="image"></a>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="page-width product_deals">
+            <div class="block">
+              {% if section.settings.title != blank %}
+                <div class="title_block {{ section.settings.title_alignment }}">
+                  <span>{{ section.settings.title | nofilter }}</span>
+                  {% if section.settings.subheading != blank %}
+                    <span class="sub_title">{{ section.settings.subheading | escape }}</span>
+                  {% endif %}
+                </div>
+              {% endif %}
+            
+              {% case section.settings.grid_number %}
+              {% when '2' %}
+                {%- assign img_size = settings.img_size_large -%}
+              {% when '3' %}
+                {%- assign img_size = settings.img_size_large -%}
+              {% when '4' %}
+                {%- assign img_size = settings.img_size -%}
+              {% when '5' %}
+                {%- assign img_size = settings.img_size -%}
+              {% when '6' %}
+                {%- assign img_size = settings.img_size -%}
+              {% endcase %}
+            
+              <div class="row grid grid--view-items nov-slick-carousel"
+                data-autoplay="{{ section.settings.autoplay }}"
+                data-autoplayTimeout="{{ section.settings.autoplay_timeout }}"
+                data-loop="false"
+                data-dots="{{ section.settings.show_dots }}"
+                data-nav="{{ section.settings.show_nav }}"
+                data-items="{{ section.settings.grid_number }}"
+                data-item_lg_tablet="{{ section.settings.grid_number_lg_tablet }}"
+                data-items_tablet="{{ section.settings.items_tablet }}"
+                data-items_mobile="{{ section.settings.items_mobile }}">
+              {% for block in section.blocks %}
+                {% assign product = all_products[block.settings.product_handle] %}
+                <div class="item col-12">
+                  <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} {% if section.settings.reverse == true %}flex-row-reverse{% endif %}">
+          
+                    <div class="thumbnail-container has-multiimage">
+                      <a href="{{ product.url | within: collection }}">
+                        <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                        {% for image in product.images %}
+                          {% if forloop.first != true %}
+                              <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                              {% break %}
+                          {% endif %}
+                        {% endfor %}
+                      </a>
+                    </div>
+          
+                    {% comment %}
+                      {% if bold_compare_at_price > bold_price %}
+                        <span class="badge badge--sale">{{ bold_price | times: 100.0 | divided_by: bold_compare_at_price }}%</span>
+                      {% endif %}
+                    {% endcomment %}
+          
+                    {% if bold_compare_at_price > bold_price %}
+                      <div class="badge badge--sale d-none">{{ 'products.product.on_sale' | t }}</div>
+                    {% endif %}
+          
+                    <div class="product__info">
+
+                      {% if settings.show_rating %}
+                      <div class="product__review">
+                        <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                      </div>
+                      {% endif %}
+                      
+                      <div class="product__title">
+                        <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                      </div>
+            
+                      <div class="product__price">
+                        {% include 'product-price' %}
+                      </div>
+            
+                      {%- if block.settings.countdown_timeend != blank -%}
+                        {%- assign countdownTime = block.settings.countdown_timeend -%}
+                        <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                      {%- endif -%}
+
+                      {% if section.settings.truncate %}
+                        {%- assign trun_cate = section.settings.truncate -%}
+                        <div class="product__description">
+                          {{ product.description | strip_html | truncate: trun_cate}}
+                        </div>
+                      {% else %}
+                        <div class="product__description">
+                          {{ product.description | strip_html | truncate: 80}}
+                        </div>
+                      {% endif %}
+            
+                      {% include 'group_buttons' %}
+
+                    </div>
+          
+                  </div>
+                </div>
+              {% else %}
+            
+              {% for i in (1..6) %}
+                <div class="item">
+                  <div class="item-product mb-20">
+                    <div class="product__info text-center">
+                      <div class="product__title"><a href="{{ collection.url }}">{{ 'homepage.onboarding.product_title' | t }}</a></div>
+                      <div class="product__price">
+                        {% include 'product-price' %}
+                      </div>
+                    </div>
+                    <div class="thumbnail-container">
+                      <a href="{{ collection.url }}">
+                        {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                        {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              {% endfor %}
+              {% endfor %}
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 banner-deal">
+          <div class="gallery-image">
+            <div class="gallery-image__item">
+              <a href="{{ section.settings.link_img2 }}"><img src="{{ section.settings.img_2 | img_url: '1920x' }}" alt="image"></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% if section.settings.has_fullwidth == false %}
+      </div>
+    {% endif %}
+    </div>
+  </div>
+
+</div>
+
+{% schema %}
+{
+  "name": "Vinova products deal",
+  "class": "index-section section-product-deal",
+  "settings":[
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Heading",
+      "default": "Vinova Products List"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Sub Heading",
+      "default": "Subtitle from happy customers"
+    },
+    {
+      "type": "select",
+      "id": "title_alignment",
+      "label": "Title alignment",
+      "default": "text-left",
+      "options": [
+        {
+          "value": "text-left",
+          "label": "Left"
+        },
+        {
+          "value": "text-center",
+          "label": "Center"
+        },
+        {
+          "value": "text-right",
+          "label": "Right"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "label": "Show navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto play",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "autoplay_timeout",
+      "label": "Autoplay timeout",
+      "placeholder": "Default: 10000(ms)",
+      "info": "Autoplay interval timeout.",
+      "default": "10000"
+    },
+    {
+      "type": "checkbox",
+      "id": "reverse",
+      "label": "Reverse image and info",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "grid_number",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Grid items",
+      "default": 3,
+      "info": "Large desktops"
+    },
+    {
+      "type": "range",
+      "id": "grid_number_lg_tablet",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Tablet lg items",
+      "default": 3,
+      "info": "Tablets landscape"
+    },
+    {
+      "type": "range",
+      "id": "items_tablet",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Tablet items",
+      "default": 3,
+      "info": "Tablets landscape"
+    },
+    {
+      "type": "range",
+      "id": "items_mobile",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "label": "Mobile items",
+      "default": 2,
+      "info": "Mobile phone"
+    },
+    {
+      "type": "text",
+      "id": "truncate",
+      "label": "Length Description",
+      "default": "120"
+    },
+    {
+      "type": "text",
+      "id": "class",
+      "label": "Class"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_1",
+      "label": "Image 1"
+    },
+    {
+      "type": "url",
+      "id":  "link_img1",
+      "label": "Link Img 1"
+    },
+    {
+      "type": "image_picker",
+      "id": "img_2",
+      "label": "Image 2"
+    },
+    {
+      "type": "url",
+      "id":  "link_img2",
+      "label": "Link Img 2"
+    },
+    {
+      "type": "checkbox",
+      "id": "has_fullwidth",
+      "label": "Full Width",
+      "default":   false
+    },
+    {
+      "type": "text",
+      "id": "distance_top",
+      "label": "Top Distance Section",
+      "default": "30px"
+    },
+    {
+      "type": "text",
+      "id": "distance_bottom",
+      "label": "Bottom Distance Section",
+      "default": "30px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "productcountdownlist",
+      "name": "Product Item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Product"
+        },
+        {
+          "type": "header",
+          "content": "Countdown timer"
+        },
+        {
+          "type": "text",
+          "id": "countdown_timeend",
+          "label": "Time End",
+          "placeholder": "YYYY\/MM\/DD"
+        },
+        {
+          "type": "paragraph",
+          "content": "Format: 'Year\/Month\/Day'"
+        },
+        {
+          "type": "paragraph",
+          "content": "Example: '2019\/01\/30'"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vinova Products deal",
+      "category": "Product List",
+      "settings": {
+        "title": "Product List Countdown"
+      },
+      "blocks": [
+        {
+        "type":"productcountdownlist"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

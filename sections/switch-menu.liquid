@@ -1,0 +1,104 @@
+<div class="switch-menu">
+  <ul class="nav nav-tabs">
+      <li><a class="active" href="#Tab1" data-toggle="tab">{{ section.settings.title_1 }}</a></li>
+      <li><a href="#Tab2" data-toggle="tab">{{ section.settings.title_2 }}</a></li>
+  </ul>
+  <div class="tab-content">
+    <div class="tab-pane active" id="Tab1">
+      <ul class="site-nav row" id="SiteNav">
+        {% for link in linklists[section.settings.menu_1].links %}
+          {%- assign three_level_nav = false -%}
+          {%- assign child_list_handle = link.title | handleize -%}
+
+          {% if linklists[child_list_handle].links != blank %}
+            {% for childlink in linklists[child_list_handle].links %}
+              {% assign grand_child_list_handle = childlink.title | handleize %}
+              {% if linklists[grand_child_list_handle].links != blank %}
+                {%- assign three_level_nav = true -%}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          <li class="site-nav--has-dropdown col-md-6 col-xs-6" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+            <ul>
+              {% if linklists[child_list_handle].links != blank %}
+                {% for childlink in linklists[child_list_handle].links %}
+                  {% assign grand_child_list_handle = childlink.title | handle %}
+                  <li class="site-nav__childlist-item">
+                    <a href="{{ childlink.url }}" class="site-nav__link site-nav__child-link site-nav__child-link--parent">{{ childlink.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    <div class="tab-pane" id="Tab2">
+      <ul class="site-nav row" id="SiteNav">
+        {% for link in linklists[section.settings.menu_2].links %}
+          {%- assign three_level_nav = false -%}
+          {%- assign child_list_handle = link.title | handleize -%}
+
+          {% if linklists[child_list_handle].links != blank %}
+            {% for childlink in linklists[child_list_handle].links %}
+              {% assign grand_child_list_handle = childlink.title | handleize %}
+              {% if linklists[grand_child_list_handle].links != blank %}
+                {%- assign three_level_nav = true -%}
+              {% endif %}
+            {% endfor %}
+          {% endif %}
+
+          <li class="site-nav--has-dropdown col-md-6 col-xs-6" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+            <ul>
+              {% if linklists[child_list_handle].links != blank %}
+                {% for childlink in linklists[child_list_handle].links %}
+                  {% assign grand_child_list_handle = childlink.title | handle %}
+                  <li class="site-nav__childlist-item">
+                    <a href="{{ childlink.url }}" class="site-nav__link site-nav__child-link site-nav__child-link--parent">{{ childlink.title | escape }}</a>
+                  </li>
+                {% endfor %}
+              {% endif %}
+            </ul>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+</div>
+
+{% schema %}
+  {
+    "name": "Switch menu",
+    "class": "nov-menu-switch",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title_1",
+        "label": "Title menu 1"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_1",
+        "label": "Menu 1"
+      },
+      {
+        "type": "text",
+        "id": "title_2",
+        "label": "Title menu 2"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_2",
+        "label": "Menu 2"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Menu sidebar",
+        "category": "Menu sidebar"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,239 @@
+<div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}">
+  <div id="section-instagram-{{ section.id }}" {% if section.settings.class != blank %}class="{{ section.settings.class }}"{% endif %} data-section-id="{{ section.id }}" data-section-type="nov-instagram">
+    <div class="block">
+      {% if section.settings.has_fullwidth == false %}
+      <div class="container">
+      {% endif %}
+      <h2 class="title_block {{ section.settings.title_alignment }}">
+          {% if section.settings.img_title != blank %}
+            <img class="mb-10" src="{{section.settings.img_title | img_url: '400x' }}" alt="image_title">
+          {% endif %}
+          <span>{{ section.settings.section_title | escape }}</span>
+          {% if section.settings.subheading != blank %}
+            <span class="sub_title{% if section.settings.inline == true %} d-inline{% endif %}">{{ section.settings.subheading | escape }}</span>
+          {% endif %}
+      </h2>
+      {% if section.settings.view_type == 'slider_type' %}
+        <div class="block_content">
+          <div id="instafeed" class="boxInstagram owl-theme" data-limit="{{ section.settings.limit }}" data-userid="{{ section.settings.user_id }}" data-accesstoken="{{ section.settings.access_token }}" data-autoplay="false" data-autoplayTimeout="6000" data-loop="true" data-margin="{{ section.settings.spacing }}" data-dots="{{ section.settings.show_dots }}" data-nav="{{ section.settings.show_nav }}" data-items="{{ section.settings.show_number }}" data-items_mobile="{{ section.settings.mobile_number }}"></div>
+        </div>
+      {% else %}
+        <div class="block_content">
+          <div id="instafeed" class="boxInstagram boxInstagram-grid row spacing-{{ section.settings.spacing_grid }}" data-limit="{{ section.settings.limit }}" data-userid="{{ section.settings.user_id }}" data-accesstoken="{{ section.settings.access_token }}" data-items="{{ section.settings.show_number }}" data-items_mobile="2"></div>
+        </div>
+      {% endif %}
+      {% if section.settings.has_fullwidth == false %}
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% schema %}
+    {
+      "name": "Vinova Instagram",
+      "class": "index-section nov-section section-instagram",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img_title",
+          "label": "Image Title"
+        },
+        {
+          "type": "text",
+          "id": "section_title",
+          "label": "Heading",
+          "default": "Instagram Vinovathemes"
+        },
+        {
+          "type": "text",
+          "id": "subheading",
+          "label": "Subheading",
+          "default": "A short sentence describing what someone will receive by subscribing"
+        },
+        {
+          "type": "checkbox",
+          "id": "inline",
+          "label": "Inline",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "title_alignment",
+          "label": "Title alignment",
+          "default": "text-left",
+          "options": [
+            {
+              "value": "text-left",
+              "label": "Left"
+            },
+            {
+              "value": "text-center",
+              "label": "Center"
+            },
+            {
+              "value": "text-right",
+              "label": "Right"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "user_id",
+          "label": "User Id (*)",
+          "default": "5321162237",
+          "info": "Please follow: [Get user ID](https://smashballoon.com/instagram-feed/find-instagram-user-id/)"
+        },
+        {
+          "type": "text",
+          "id": "access_token",
+          "label": "Access Token (*)",
+          "default": "5321162237.aeeff59.88fc9b19bbae49978de5bb9da2a2fb61",
+          "info": "Please follow: [Get Access Token](https://elfsight.com/service/get-instagram-access-token/)"
+        },
+        {
+          "type": "text",
+          "id": "limit",
+          "label": "Limit Number",
+          "default": "16"
+        },
+        {
+          "type": "text",
+          "id": "show_number",
+          "label": "Show Number",
+          "default": "8"
+        },
+        {
+          "type": "text",
+          "id": "mobile_number",
+          "label": "Mobile Show Number",
+          "default": "2"
+        },
+        {
+          "type": "text",
+          "id": "spacing",
+          "label": "Spacing Item(Slider Type)",
+          "default": "10"
+        },
+        {
+          "type": "select",
+          "id": "spacing_grid",
+          "label": "Spacing Items(Grid Type)",
+          "default": "10",
+          "options": [
+            {
+              "label": "0px",
+              "value": "0"
+            },
+            {
+              "label": "5px",
+              "value": "5"
+            },
+            {
+              "label": "10px",
+              "value": "10"
+            },
+            {
+              "label": "15px",
+              "value": "15"
+            },
+            {
+              "label": "20px",
+              "value": "20"
+            },
+            {
+              "label": "25px",
+              "value": "25"
+            },
+            {
+              "label": "30px",
+              "value": "30"
+            }
+          ]
+        },
+        {
+          "type": "checkbox",
+          "id": "show_nav",
+          "label": "Show Navigation (Only Slider Type)",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dots",
+          "label": "Show dots (Only Slider Type)",
+          "default": false
+        },
+        {
+          "type": "select",
+          "id": "view_type",
+          "label": "View Type",
+          "options": [
+            { "value": "grid_type", "label": "Grid Type"},
+            { "value": "slider_type", "label": "Slider Type"}
+          ],
+          "default": "grid_type",
+          "info": "Select Instagram type for theme"
+        },
+        {
+          "type":  "header",
+          "content": "Design Option"
+        },
+        {
+          "type": "text",
+          "id": "class",
+          "label": "Class"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background colors"
+        },
+        {
+          "type": "image_picker",
+          "id": "background_image",
+          "label": "Background image"
+        },
+        {
+          "type": "checkbox",
+          "id": "has_fullwidth",
+          "label": "Full Width",
+          "default": false
+        },
+        {
+          "type": "text",
+          "id": "distance_top",
+          "label": "Top Distance Section",
+          "default": "30px"
+        },
+        {
+          "type": "text",
+          "id": "distance_bottom",
+          "label": "Bottom Distance Section",
+          "default": "30px"
+        }
+      ],
+      "presets": [{
+        "name": "Vinova Instagram",
+        "category": "Promotional"
+      }]
+    }
+{% endschema %}
+
+<style>
+  {%- assign bg_image = section.settings.background_image -%}
+  {% if section.settings.background_color != blank or bg_image.src != blank %}
+    #section-instagram-{{ section.id }} {
+      {% if section.settings.background_color != blank %}
+        background-color: {{ section.settings.background_color }};
+      {% endif %}
+      {% if bg_image.src != blank %}
+        background-image: url("{{ bg_image | img_url: '1920x' }}");
+      {% endif %}
+    }
+  {% endif %}
+  {% if section.settings.spacing == '1' %}
+    #section-instagram-{{ section.id }} .owl-stage-outer {
+      background: #fff;
+      border-top: 1px solid #fff;
+    }
+  {% endif %}
+</style>

@@ -1,0 +1,306 @@
+<footer class="nov-footer {{ section.settings.footer_type }}">
+  
+  {% if section.settings.footer_type == 'footer_1' %}
+    {% include 'footer-1' %}
+  {% endif %}
+</footer>
+
+{% schema %}
+  {
+    "name": "Footer", 
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "select",
+        "id": "footer_type",
+        "label": "Choosen Footer Type",
+        "options": [
+         {"value": "footer_1", "label": "Footer 1"}
+        ],
+        "default": "footer_1",
+        "info": "Select Footer type for theme"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default":   false
+      } 
+    ],
+    "blocks": [
+      {
+        "type": "link",
+        "name": "Menu Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "menu_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "menu_class",
+            "label": "Class",
+            "default": "col-xs-12 col-sm-4"
+          },
+          {
+            "type": "link_list",
+            "id": "menu_handle",
+            "label": "Choose Menu",
+            "info": "Choose menu for block. Add new menu: Admin -> Navigation"
+          }
+        ]
+      },
+      {
+        "type": "block_html",
+        "name": "Block HTML",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+             "type": "textarea",
+             "id": "html_content",
+             "label": "Content",
+             "placeholder": "You can input code html for content.",
+             "info": "You can input code html for content."
+          }
+        ]
+      },
+      {
+        "type": "block_social",
+        "name": "Social Media",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+             "type": "select",
+             "id": "display_type",
+             "label": "Display Type",
+             "options": [
+               {
+                 "value": "list",
+                 "label": "Display List"
+               },
+               {
+                 "value": "inline",
+                 "label": "Display Inline"
+               }
+             ],
+             "default": "inline",
+             "info": "Select type dislay for list social media"
+          },
+          {
+             "type": "checkbox",
+             "id": "show_label",
+             "label": "Enable label social",
+             "default": false
+          }
+        ]
+      },
+      {
+        "type": "block_policy",
+        "name": "Block Policy",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "image_picker",
+            "id": "block_img",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "block_content",
+            "label": "Content",
+            "default": "write"
+            
+          }
+        ]
+      },
+      {
+        "type": "block_contact",
+        "name": "Contact Infomation",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "image_picker",
+            "id": "contact_img",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "contact_address",
+            "label": "Address",
+            "placeholder": "Examle: 123 Suspendis matti, Vinova Building VST  District NY Accums"
+          },
+          {
+            "type": "text",
+            "id": "contact_phone",
+            "label": "Phone 1",
+            "placeholder": "Examle: (+84) 123456789"
+          },
+          {
+            "type": "text",
+            "id": "contact_phone_2",
+            "label": "Phone 2",
+            "placeholder": "Examle: (+84) 0123456789"
+          },
+          {
+            "type": "text",
+            "id": "contact_email",
+            "label": "Email",
+            "placeholder": "info@vinovathemes.com"
+          },
+          {
+            "type": "text",
+            "id": "contact_email_2",
+            "label": "Email 2",
+            "placeholder": "demo@vinovathemes.com"
+          },
+          {
+            "type": "text",
+            "id": "contact_fax",
+            "label": "Fax",
+            "placeholder": "Examle: 123456789"
+          }
+        ]
+      },
+      {
+        "type": "block_newsletter",
+        "name": "Block Newsletter",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+             "type": "textarea",
+             "id": "newsletter_des",
+             "label": "Newsletter Description",
+             "placeholder": "You can input code html for content.",
+             "info": "You can input code html for description."
+          }
+        ]
+      },
+      {
+        "type": "block_instagram",
+        "name": "Block Instagram",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Heading",
+            "default": "Instagram Vinovathemes"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "text",
+            "id": "user_id",
+            "label": "User Id (*)",
+            "default": "5321162237",
+            "info": "Please follow: [Get user ID](https://smashballoon.com/instagram-feed/find-instagram-user-id/)"
+          },
+          {
+            "type": "text",
+            "id": "access_token",
+            "label": "Access Token (*)",
+            "default": "5321162237.aeeff59.88fc9b19bbae49978de5bb9da2a2fb61",
+            "info": "Please follow: [Get Access Token](https://elfsight.com/service/get-instagram-access-token/)"
+          },
+          {
+            "type": "text",
+            "id": "limit",
+            "label": "Limit Number",
+            "default": "16"
+          },
+          {
+            "type": "text",
+            "id": "show_number",
+            "label": "Show Number",
+            "default": "8"
+          },
+          {
+            "type": "select",
+            "id": "view_type",
+            "label": "View Type",
+            "options": [
+              { "value": "grid_type", "label": "Grid Type"},
+              { "value": "slider_type", "label": "Slider Type"}
+            ],
+            "default":   "grid_type",
+            "info":      "Select Instagram type for theme"
+          },
+          {
+            "type": "paragraph",
+            "content": "Any customers who sign up will have an account created for them in Shopify. [View customers](/admin/customers?query=&accepts_marketing=1)"
+          }
+        ]
+      },
+      {
+        "type": "block_copyright",
+        "name": "copyright",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text_copyright",
+            "label": "Copyright"
+          },
+          {
+            "type": "image_picker",
+            "id": "img_copyright",
+            "label": "Image"
+          }
+        ]
+      }    
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,17 @@
+{% if settings.type_slideshow contains 'Google' %}
+  {%- assign type_sideshow_partsconcec = settings.type_slideshow | split: '_' -%}
+  {% capture sliderGoogleUrl %}{{ type_sideshow_partsconcec[1] }}:300,400,500,600,700,800,900{% endcapture %}
+  {{ '//fonts.googleapis.com/css?family=' | append: sliderGoogleUrl | stylesheet_tag }}
+{% endif %}
+{% if settings.type_base_family contains 'Google' %}
+  {%- assign type_base_parts = settings.type_base_family | split: '_' -%}
+  {% capture baseGoogleUrl %}{{ type_base_parts[1] }}:300,400,500,600,700,800,900{% endcapture %}
+  {{ '//fonts.googleapis.com/css?family=' | append: baseGoogleUrl | stylesheet_tag }}
+{% endif %}
+{% if settings.type_header_family contains 'Google' %}
+  {% unless settings.type_header_family contains type_base_parts[1] and settings.type_header_family contains '700' %}
+    {%- assign type_header_parts = settings.type_header_family | split: '_' -%}
+    {% capture headerGoogleUrl %}{{ type_header_parts[1] }}:{{ type_header_parts[2] }},300,400,400i,500,600,600i,700,800,900{% endcapture %}
+    {{ '//fonts.googleapis.com/css?family=' | append: headerGoogleUrl | stylesheet_tag }}
+  {% endunless %}
+{% endif %}

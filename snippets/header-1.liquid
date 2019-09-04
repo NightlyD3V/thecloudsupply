@@ -1,0 +1,301 @@
+<div class="header-mobile d-md-none">
+  <div class="row no-gutters align-items-center justify-content-end">
+    <div class="col-3">
+       <div class="btn-mobile_vertical_menu"><i class="zmdi zmdi-menu"></i></div>
+    </div>
+    <div class="mobile_logo col-6 text-center">
+      {% if section.settings.logo_mobile %}
+        <a href="/" class="site-header__logo-image img-fluid">
+          {% capture logo_alt %}{{ section.settings.logo_mobile.alt | default: shop.name }}{% endcapture %}
+          <img class="lazyload js" src="{{ section.settings.logo_mobile | img_url: '300x' }}" alt="{{ logo_alt | escape }}" style="max-width: {{ section.settings.logo_max_width }}px">
+        </a>
+      {% else %}
+        <a class="site-header__logo-link" href="/">{{ shop.name }}</a>
+      {% endif %}
+    </div>
+    <div class="col-3 d-flex justify-content-end">
+      <div id="show-megamenu" class="item-mobile-top"><i class="zmdi zmdi-more"></i></div>
+    </div>
+  </div>
+  <div id="mobile_search">
+    {% include 'nov-formsearch-inline' %}
+  </div>
+</div>
+
+<div class="contentsticky_top">
+  <div class="container d-none d-md-block position-relative">
+    <div class="row align-items-center">
+
+      <div class="contentsticky_logo col-lg-3 col-md-3">
+        {% if template.name == 'index' %}
+          <h1 class="h2 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+        {% else %}
+          <div class="h2 site-header__logo" itemscope itemtype="http://schema.org/Organization">
+        {% endif %}
+          {% if section.settings.logo %}
+            <a href="/" class="site-header__logo-image{% if section.settings.align_logo == 'center' %} site-header__logo-image--centered{% endif %}" style="max-width: {{ section.settings.logo_max_width }}px">
+              {% capture logo_alt %}{{ section.settings.logo.alt | default: shop.name }}{% endcapture %}
+              <img class="lazyload js img-fluid" src="{{ section.settings.logo | img_url: '300x' }}" alt="{{ logo_alt | escape }}">
+            </a>
+          {% else %}
+            <a class="site-header__logo-link" href="/">{{ shop.name }}</a>
+          {% endif %}
+        {% if template.name == 'index' %}
+          </h1>
+        {% else %}
+          </div>
+        {% endif %}
+      </div>
+
+      <div class="contentsticky_total col-lg-9 col-md-9 d-flex justify-content-end total">
+        <div class="policy_ct">
+          {% if section.settings.show_policy == true %}
+          <div class="row">
+            <div class="nov-policy-1 d-flex align-items-end justify-content-center">
+              <div class="nov-policy-item">
+                <div class="policy-icon">
+                  <img src="{{ section.settings.policy_icon_1 | img_url: '72x' }}" alt="image">
+                </div>
+                <div class="policy-info">
+                  <div class="title-policy text-uppercase">{{ section.settings.title_policy_1 }}</div>
+                  <div class="desc-policy">{{ section.settings.desc_policy_1 }}</div>
+                </div>
+              </div>
+            </div>
+            <div class="nov-policy-2 d-flex align-items-end justify-content-center">
+              <div class="nov-policy-item">
+                <div class="policy-icon">
+                  <img src="{{ section.settings.policy_icon_2 | img_url: '72x' }}" alt="image">
+                </div>
+                <div class="policy-info">
+                  <div class="title-policy text-uppercase">{{ section.settings.title_policy_2 }}</div>
+                  <div class="desc-policy">{{ section.settings.desc_policy_2 }}</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          {% endif %}
+        </div>
+        <div class="cart">
+          <div class="site-header__icons-wrapper style_1 d-flex align-items-center justify-content-end">
+            <div id="search_main" class="site-header__search">
+              <div class="site-header__search-icon">
+                <i class="icon-search"></i>
+              </div>
+              <div id="search_widget" class="site_header__search">
+                {% include 'nov-formsearch-inline' %}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="header-bottom">
+  <div class="container d-flex">
+    <div class="position-static">
+      <div class="content-left align-items-center">
+        <div class="vertical_dropdown{% if template.name == 'index' %} active{% endif %}">
+          <div class="title_vertical text-uppercase position-relative d-flex align-items-center{% if template.name != 'index' %} template-{% endif %}">
+            <i class="zmdi zmdi-format-subject"></i>
+            {% comment %}
+            <span class="ml-20">{{ 'layout.header.sidebarmenu_title' | t }}</span>
+            {% endcomment %}
+          </div>
+        </div>
+        <div id="_desktop_vertical_menu" class="vertical_menu has-showmore"
+          data-count_showmore="{{ section.settings.show_more }}"
+          data-count_showmore_tablet="{{ section.settings.show_more_tablet }}"
+          data-textshowmore="{{ 'layout.verticalmenu.show_more' | t }}"
+          data-textless="Show Less">
+          <ul class="site-nav" id="SiteNav">
+            {% assign count_showmore = section.settings.show_more | plus: 0 %}
+            {% for link in linklists[section.settings.vertical_menu].links %}
+              {% assign isMega = false %}
+              {% assign isIcon = false %}
+              {% assign class_hidden = '' %}
+              {% comment %}
+              {% if forloop.index > count_showmore %}
+                {% assign class_hidden = ' hide' %}
+              {% endif %}
+              {% endcomment %}
+              {%- assign three_level_nav = false -%}
+              {%- assign child_list_handle = link.title | handleize -%}
+    
+              {% if linklists[child_list_handle].links != blank %}
+                {% for childlink in linklists[child_list_handle].links %}
+                  {% assign grand_child_list_handle = childlink.title | handleize %}
+                  {% if linklists[grand_child_list_handle].links != blank %}
+                    {%- assign three_level_nav = true -%}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+    
+              {% if section.settings.novmenu_enable %}
+                {% for block in section.blocks %}
+                  {% assign menuItem = link.title %}
+                  {% if block.settings.novmenu_item contains menuItem %}
+                    {% include 'nov-megamenu', class_hidden: class_hidden %}
+                    {% assign isMega = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+    
+              {% if section.settings.show_icon %}
+                {% for block in section.blocks %}
+                  {% assign menuItem = link.title %}
+                  {% if block.settings.name_item contains menuItem %}
+                    {% include 'nov-iconmenu', class_hidden: class_hidden %}
+                    {% assign isIcon = true %}
+                    {% break %}
+                  {% endif %}
+                {% endfor %}
+              {% endif %}
+    
+              {% if isMega == false and isIcon == false %}
+                {% if linklists[child_list_handle].links != blank %}
+                  <li class="site-nav--has-dropdown {% if link.active %} site-nav--active{% endif %}{{ class_hidden }}" aria-controls="SiteNavLabel-{{ child_list_handle }}">
+                    <a href="{{ link.url }}" class="site-nav__link site-nav__link--main">
+                      {{ link.title }}
+                      <span class="d-lg-none show_sub ml-auto"><i class="material-icons">add_box</i></span>
+                    </a>
+                    <div class="site-nav__dropdown" id="SiteNavLabel-{{ child_list_handle }}" aria-expanded="false" role="main">
+                      {% if three_level_nav %}
+                        <div class="site-nav__childlist">
+                          <div class="site-nav__childlist-grid">
+                            {% if linklists[child_list_handle].links != blank %}
+                              {% for childlink in linklists[child_list_handle].links %}
+                                {% assign grand_child_list_handle = childlink.title | handle %}
+                                <div class="site-nav__childlist-item">
+                                  <a href="{{ childlink.url }}" class="site-nav__link site-nav__child-link site-nav__child-link--parent">{{ childlink.title | escape }}</a>
+                                  <div class="site-nav__dropdown_three">
+                                    <ul class="sub-menu">
+                                    {% for grandchildlink in linklists[grand_child_list_handle].links %}
+                                        <li>
+                                          <a href="{{ grandchildlink.url }}" class="site-nav__link site-nav__child-link">{{ grandchildlink.title | escape }}</a>
+                                        </li>
+                                    {% endfor %}
+                                    </ul>
+                                  </div>
+                                </div>
+                              {% endfor %}
+                            {% endif %}
+                          </div>
+                        </div>
+                      {% else %}
+                        <ul>
+                          {% for childlink in linklists[child_list_handle].links %}
+                            <li {% if childlink.active %}class="site-nav--active"{% endif %}>
+                              <a href="{{ childlink.url }}" class="site-nav__link site-nav__child-link{% if forloop.last %} site-nav__link--last{% endif %}">{{ childlink.title | escape }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      {% endif %}
+                    </div>
+                  </li>
+                {% else %}
+                  <li class="{{ class_hidden }}{% if link.active %} site-nav--active{% endif %}">
+                    <a href="{{ link.url }}" class="site-nav__link site-nav__link--main">
+                      {{ link.title }}
+                    </a>
+                  </li>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+            {% if condition %}
+              what to do
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+    
+    <nav id="AccessibleNav" class="contentsticky_menu">
+      {% include 'site-nav' %}
+    </nav>
+    <div class="contentsticky_wrapper d-flex align-items-center ml-auto">
+      <div class="site-header__icons-wrapper style_1">
+        <div class="group-account">
+          <div class="myaccount-title dropdown-toggle" data-toggle="dropdown">
+            <span class="icon-account"></span>
+            {%comment%}
+            {{ 'layout.customer.account' | t }}
+            {%endcomment%}
+          </div>
+          <div class="account-list dropdown-menu dropdown-menu-right" id="_desktop_account_list">
+            <div class="nov_sideward_content">
+              <div class="account-list-content">
+                {% if shop.customer_accounts_enabled %}
+                  {% if customer %}
+                    <div>
+                      <a class="myaccount" href="{{ shop.secure_url }}/account" rel="nofollow" title="{{ 'layout.customer.account' | t }}">
+                        <i class="zmdi zmdi-account"></i><span>{{ 'layout.customer.account' | t }}</span>
+                      </a>
+                    </div>
+                    <div>
+                      <a class="logout" href="{{ shop.secure_url }}/account/logout" rel="nofollow" title="{{ 'layout.customer.log_out' | t }}">
+                        <i class="fa fa-sign-out"></i><span>{{ 'layout.customer.log_out' | t }}</span>
+                      </a>
+                    </div>
+                  {% else %}
+                    <div>
+                      <a class="login" href="{{ shop.secure_url }}/account/login" rel="nofollow" title="{{ 'layout.customer.log_in' | t }}">
+                        <i class="fa fa-sign-in"></i><span>{{ 'layout.customer.log_in' | t }}</span>
+                      </a>
+                    </div>
+                    {% if shop.customer_accounts_optional %}
+                    <div>
+                      <a class="register" href="{{ shop.secure_url }}/account/register" rel="nofollow" title="{{ 'layout.customer.create_account' | t }}">
+                        <i class="fa fa-user-plus"></i><span>{{ 'layout.customer.create_account' | t }}</span>
+                      </a>
+                    </div>
+                    {% endif %}
+                  {% endif %}
+                {% endif %}
+                <div>
+                  <a class="check-out" href="{{ shop.secure_url }}/checkout" rel="nofollow" title="{{ 'layout.customer.checkout' | t }}">
+                    <i class="zmdi zmdi-check-circle"></i><span>{{ 'layout.customer.checkout' | t }}</span>
+                  </a>
+                </div>
+                <div>
+                  <a class="check-out" href="{{ shop.secure_url }}/wishlists" rel="nofollow" title="{{ 'layout.customer.my_wishlists' | t }}">
+                    <i class="fa fa-heart"></i><span>{{ 'layout.customer.my_wishlists' | t }}</span>
+                  </a>
+                </div>
+                <div class="currency_header">
+                  {% include 'nov-block-currency' %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div id="cart_block">
+          <a href="/cart" class="site-header__cart d-flex">
+            <span class="site-header__cart-icon"></span>
+            {%comment%}
+            <span class="site-header__cart-title">{{ 'layout.cart.title' | t }}</span>
+            <span id="CartCost" class="cart-total">{{ cart.total_price | money }}</span>
+            {%endcomment%}
+            {% if cart.item_count > -1 %}
+              <div class="site-header__cart-count">
+                <span id="CartCount">{{ cart.item_count }}</span>
+              </div>
+            {% endif %}
+          </a>
+          <div id="_desktop_cart"><div id="cart-info"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="header-sticky">
+  <div class="container d-flex justify-content-between align-items-center">
+    <div class="contentstickynew_logo"></div>
+    <div class="contentstickynew_menu"></div>
+    <div class="contentstickynew_wrapper"></div>
+  </div>
+</div>

@@ -1,0 +1,481 @@
+<footer data-section-id="{{ section.id }}">
+  {% if section.settings.show_newsletter == true %}
+  <div class="newsletter">
+    <div class="container">
+      <div class="row d-xl-flex align-items-center footer-top">
+        <div class="col-lg-5 col-md-12 block_social">
+          {% include 'nov-social' %}
+        </div>
+        <div class="col-lg-7 col-md-12 block_subscribe block-content w-100">
+          {% if section.settings.title_newsletter != blank %}
+          <div class="title_block">
+            <span>{{ section.settings.title_newsletter }}</span>   
+            {% if section.settings.newsletter_des != blank %}
+              <div class="sub_title">{{ section.settings.newsletter_des }}</div>
+            {% endif %}
+          </div>
+          {% endif %}
+          <div class="site-footer__newsletter">
+            {% form 'customer' %}
+              {{ form.errors | default_errors }}
+              {% if form.posted_successfully? %}
+                <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+              {% else %}
+                <div class="input-group">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <input type="email"
+                    name="contact[email]"
+                    id="Email"
+                    class="input-group__field newsletter__input"
+                    value="{% if customer %}{{ customer.email }}{% endif %}"
+                    placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}">
+                  <span class="input-group__btn">
+                    <button type="submit" class="btn newsletter__submit" name="commit" id="Subscribe">
+                      <span class="newsletter__submit-text--large">
+                      {{ 'general.newsletter_form.submit' | t }}
+                      </span>
+                    </button>
+                  </span>
+                </div>
+              {% endif %}
+            {% endform %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {%- assign display_map = false -%}
+  {%- assign onboarding = false -%}
+  {%- assign bg_image = section.settings.background_image -%}
+
+  {%- if section.settings.api_key == blank and bg_image == blank -%}
+    {%- assign onboarding = true -%}
+  {%- endif -%}
+  {%- if section.settings.api_key != blank and section.settings.map_address -%}
+    {%- assign display_map = true -%}
+  {%- endif -%}
+
+  <style>
+    {% if bg_image.src != blank %}
+    #MapSection--{{ section.id }} .map-section__image {
+      background-position: {{ section.settings.background_image_position }};
+    }
+
+    @media only screen and (max-width: 750px) {
+      #MapSection--{{ section.id }} .map-section__image {
+        padding-top: {{ 1 | divided_by: bg_image.aspect_ratio | times: 100 }}%;
+      }
+    }
+    {% endif %}
+  </style>
+  
+  {% if section.settings.show_map == true %}
+  <div id="MapSection--{{ section.id }}"
+    class="map-section {% if display_map %}map-section--display-map{% endif %} {% if onboarding == true %}map-section--onboarding{% endif %}"
+    data-section-id="{{ section.id }}"
+    data-section-type="map">
+    <div class="page-width map-section__wrapper">
+      <div class="map-section__background-wrapper">
+        {% if bg_image != blank %}
+          <div class="map-section__image lazyload js"
+               data-bgset="{% include 'bgset', image: bg_image %}"
+               data-sizes="auto"
+               data-parent-fit="cover"
+               style="background-image: url('{{ bg_image | img_url: '300x300' }});">
+          </div>
+          <noscript>
+            <div class="map-section__image" style="background-image: url({{ bg_image | img_url: 'x800', crop: 'top' }});"></div>
+          </noscript>
+        {% elsif onboarding == true %}
+          <div class="placeholder-background">
+            {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+          </div>
+        {% endif %}
+        {% if display_map %}
+          <div class="map-section__container"
+               id="Map-{{ section.id }}"
+               data-map
+               data-address-setting="{{ section.settings.map_address | escape }}"
+               data-api-key="{{ section.settings.api_key }}">
+          </div>
+          <div class="map-section__overlay" data-map-overlay></div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="block_footer">
+    {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+    {% endif %}
+      {% include 'footer-1' %}
+    {% if section.settings.has_fullwidth == false %}
+    </div>
+    {% endif %}
+  </div>
+
+  {% if section.settings.show_payment_icons == true %}
+    <div class="d-flex justify-content-center align-items-center paypal-footer">
+      <img src="{{ section.settings.payment_icons | img_url: '300x' }}" alt="img">
+    </div>
+  {% endif %}
+
+  <div id="copyright">
+    {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+    {% endif %}
+    <div class="row align-items-center">
+      <div class="col-lg-6 text-lg-left text-xs-center">
+        {{ section.settings.copyright }}
+      </div>
+      {% if section.settings.show_app == true %}
+      <div class="col-lg-6 text-lg-right text-xs-center">
+        {% if section.settings.show_certificate == true %}
+          <img src="{{ section.settings.certificate | img_url: '300x' }}" alt="img">
+        {% endif %}
+        {% if section.settings.show_certificateapp == true %}
+          <img src="{{ section.settings.certificateapp | img_url: '300x' }}" alt="img">
+        {% endif %}
+      </div>
+      {% endif %}
+    </div>
+    {% if section.settings.has_fullwidth == false %}
+      </div>
+    {% endif %}
+  </div>
+
+</footer>
+
+<div id="_mobile_vertical_menu" class="vertical_menu"></div>
+{% schema %}
+  {
+    "name": "Footer 1",
+    "class": "nov-footer footer-1",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "List Category"
+      },
+      {
+        "type": "header",
+        "content": "Newsletter"
+      },
+      {
+        "type": "text",
+        "id": "title_newsletter",
+        "label": "Newsletter title"
+      },
+      {
+        "type": "text",
+        "id": "newsletter_des",
+        "label": "Newsletter Description"
+      },
+      {
+        "type": "header",
+        "content": "Show Element"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_newsletter",
+        "label": "Show Newsletter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_address",
+        "label": "Show Address",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_payment_icons",
+        "label": "Show payment icons",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_map",
+        "label": "Show Map",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "payment_icons",
+        "label": "Upload payment icons"
+      },
+      {
+        "type": "header",
+        "content": "Text"
+      },
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading",
+        "default": "Our store"
+      },
+      {
+        "id": "map_address",
+        "type": "text",
+        "label": "Map address",
+        "info": "Google Maps will find the exact location",
+        "default": "80 Spadina Ave, Toronto"
+      },
+      {
+        "type": "header",
+        "content": "Background"
+      },
+      {
+        "id": "api_key",
+        "type": "text",
+        "label": "Google Maps API key",
+        "info": "You’ll need to [register a Google Maps API Key](https://help.shopify.com/manual/using-themes/troubleshooting/map-section-api-key) to display the map"
+      },
+      {
+        "type": "header",
+        "content": "Copyright"
+      },
+      {
+        "type": "text",
+        "id": "copyright",
+        "label": "Copyright"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_app",
+        "label": "Show App",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_certificate",
+        "label": "Show Certificate",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "certificate",
+        "label": "Upload Certificate"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_certificateapp",
+        "label": "Show Certificateapp",
+        "default": true
+      },
+      {
+        "type": "image_picker",
+        "id": "certificateapp",
+        "label": "Upload Certificateapp"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default": false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "link",
+        "name": "Menu Link",
+        "settings": [
+          {
+            "type": "text",
+            "id": "menu_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "menu_class",
+            "label": "Class",
+            "default": "col-xs-12 col-sm-4"
+          },
+          {
+            "type": "link_list",
+            "id": "menu_handle",
+            "label": "Choose Menu",
+            "info": "Choose menu for block. Add new menu: Admin -> Navigation"
+          }
+        ]
+      },
+      {
+        "type": "block_html",
+        "name": "Block HTML",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "image_picker",
+            "id": "img",
+            "label": "Image"
+          },
+          {
+            "type": "textarea",
+            "id": "html_content",
+            "label": "Content",
+            "placeholder": "You can input code html for content.",
+            "info": "You can input code html for content."
+          }
+        ]
+      },
+      {
+        "type": "block_policy",
+        "name": "Block Policy",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "image_picker",
+            "id": "block_img",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "textarea",
+            "id": "block_content",
+            "label": "Content",
+            "default": "write"
+            
+          }
+        ]
+      },
+      {
+        "type": "block_contact",
+        "name": "Contact Infomation",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "image_picker",
+            "id": "contact_img",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "contact_address",
+            "label": "Address",
+            "placeholder": "Examle: 123 Suspendis matti, Vinova Building VST  District NY Accums"
+          },
+          {
+            "type": "text",
+            "id": "contact_hours",
+            "label": "Hours",
+            "placeholder": "Examle: 08.00AM - 19.00"
+          },
+          {
+            "type": "text",
+            "id": "contact_phone",
+            "label": "Phone 1",
+            "placeholder": "Examle: (+84) 123456789"
+          },
+          {
+            "type": "text",
+            "id": "contact_phone_2",
+            "label": "Phone 2",
+            "placeholder": "Examle: (+84) 0123456789"
+          },
+          {
+            "type": "text",
+            "id": "contact_email",
+            "label": "Email",
+            "placeholder": "info@vinovathemes.com"
+          },
+          {
+            "type": "text",
+            "id": "contact_email_2",
+            "label": "Email 2",
+            "placeholder": "demo@vinovathemes.com"
+          },
+          {
+            "type": "text",
+            "id": "contact_fax",
+            "label": "Fax",
+            "placeholder": "Examle: 123456789"
+          }
+        ]
+      },
+      {
+        "type": "block_newsletter",
+        "name": "Block Newsletter",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+             "type": "textarea",
+             "id": "newsletter_des",
+             "label": "Newsletter Description",
+             "placeholder": "You can input code html for content.",
+             "info": "You can input code html for description."
+          }
+        ]
+      },
+      {
+        "type": "block_follow_openhour",
+        "name": "Follow And Open Hour",
+        "settings": [
+          {
+            "type": "text",
+            "id": "block_title_1",
+            "label": "Title 1"
+          },
+          {
+            "type": "text",
+            "id": "block_class",
+            "label": "Class",
+            "default": "col-sm-4 col-xs-12"
+          },
+          {
+            "type": "text",
+            "id": "block_title_2",
+            "label": "Title 2"
+          },
+          {
+            "type": "textarea",
+            "id": "block_content",
+            "label": "Content"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

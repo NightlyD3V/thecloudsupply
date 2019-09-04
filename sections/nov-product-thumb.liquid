@@ -1,0 +1,219 @@
+ <div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}"> 
+  <div class="{{ section.settings.class}}" data-section-id={{ section.id }} data-section-type="nov-slick">
+  {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+  {% endif %}
+    <div class="page-width product-slider">
+      {% if section.settings.title != blank %}
+        <div class="title_block">{{ section.settings.title }}</div>
+      {% endif %}
+      <div class="block">
+        <div class="slider-for">
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product_handle] %}
+            <div class="item">
+              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                <div class="row align-items-center">
+                  <div class="product__info col-md-6">
+                    <div class="product__title">
+                      <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                    </div>
+
+                    {% if settings.show_rating %}
+                    <div class="product__review">
+                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                    </div>
+                    {% endif %}
+
+                    <div class="product__price">
+                      {% include 'product-price' %}
+                    </div>
+
+                    <div class="product__description">
+                      {{ product.description | strip_html | truncate: 170}}
+                    </div>
+
+                    {%- if block.settings.countdown_timeend != blank -%}
+                      {%- assign countdownTime = block.settings.countdown_timeend -%}
+                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                    {%- endif -%}
+
+                    {% include 'group_buttons' %}
+                  </div>
+                  <div class="thumbnail-container col-md-6">
+                    <a href="{{ product.url | within: collection }}">
+                      <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '585x' }}" alt="{{ product.featured_image.alt | escape }}">
+                      {% for image in product.images %}
+                        {% if forloop.first != true %}
+                            <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '585x' }}" alt="{{ product.featured_image.alt | escape }}">
+                            {% break %}
+                        {% endif %}
+                      {% endfor %}
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% else %}
+
+          {% for i in (1..6) %}
+            <div class="item">
+              <div class="item-product mb-20">
+                <div class="thumbnail-container">
+                  <a href="{{ collection.url }}">
+                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </a>
+                </div>
+                <div class="product__info text-center">
+                  <div class="product__title"><a href="{{ collection.url }}">{{ 'homepage.onboarding.product_title' | t }}</a></div>
+                  <div class="product__price">
+                    {% include 'product-price' %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+        <div class="slider-nav">
+          {% for block in section.blocks %}
+            {% assign product = all_products[block.settings.product_handle] %}
+            <div class="item">
+              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} d-flex justify-content-center type_2">
+                <div class="thumbnail-container">
+                  <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '170x' }}" alt="{{ product.featured_image.alt | escape }}">
+                  {% for image in product.images %}
+                    {% if forloop.first != true %}
+                        <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '170x' }}" alt="{{ product.featured_image.alt | escape }}">
+                        {% break %}
+                    {% endif %}
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          {% else %}
+
+          {% for i in (1..6) %}
+            <div class="item">
+              <div class="item-product mb-20">
+                <div class="thumbnail-container">
+                  <a href="{{ collection.url }}">
+                    {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+                    {{ 'product-' | append: current | placeholder_svg_tag: 'placeholder-svg' }}
+                  </a>
+                </div>
+                <div class="product__info text-center">
+                  <div class="product__title"><a href="{{ collection.url }}">{{ 'homepage.onboarding.product_title' | t }}</a></div>
+                  <div class="product__price">
+                    {% include 'product-price' %}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  {% if section.settings.has_fullwidth == false %}
+    </div>
+  {% endif %}
+  </div>
+</div>
+{% schema %}
+{
+  "name": "Vinova products thumb",
+  "class": "index-section section-product-thumb",
+  "settings":[
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_nav",
+      "label": "Show navigation",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dots",
+      "label": "Show dots",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "autoplay",
+      "label": "Auto play",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "class",
+      "label": "Class"
+    },
+    {
+      "type": "checkbox",
+      "id": "has_fullwidth",
+      "label": "Full Width",
+      "default":   false
+    },
+    {
+      "type": "text",
+      "id": "distance_top",
+      "label": "Top Distance Section",
+      "default": "30px"
+    },
+    {
+      "type": "text",
+      "id": "distance_bottom",
+      "label": "Bottom Distance Section",
+      "default": "30px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "productcountdownlist",
+      "name": "Product Item",
+      "settings": [
+        {
+          "type": "product",
+          "id": "product_handle",
+          "label": "Product"
+        },
+        {
+          "type": "header",
+          "content": "Countdown timer"
+        },
+        {
+          "type": "text",
+          "id": "countdown_timeend",
+          "label": "Time End",
+          "placeholder": "YYYY\/MM\/DD"
+        },
+        {
+          "type": "paragraph",
+          "content": "Format: 'Year\/Month\/Day'"
+        },
+        {
+          "type": "paragraph",
+          "content": "Example: '2019\/01\/30'"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vinova Products thumb",
+      "category": "Product List",
+      "blocks": [
+        {
+        "type":"productcountdownlist"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

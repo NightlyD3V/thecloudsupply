@@ -1,0 +1,3572 @@
+<div class="distance" style="padding-top: {{ section.settings.distance_top }}; padding-bottom: {{ section.settings.distance_bottom }}" data-section-id="{{ section.id }}" data-section-type="nov-slick">
+  <div class="page-width">
+    {% if section.settings.has_fullwidth == false %}
+      <div class="container">
+    {% endif %}
+      {% if section.settings.title != blank %}
+        <div class="section-header text-center">
+          <h4 class="title_block">{{ section.settings.title | escape }}</h4>
+        </div>
+      {% endif %}
+      <div class="block_customs">
+        <div class="custom-content row">
+          {% for block in section.blocks %}
+
+            <div class="custom__item custom_{{ block.type }} {{ block.settings.width }} {{ block.settings.width_lg }} {{ block.settings.width_md }} {% if block.settings.class != blank %} {{ block.settings.class }}{% endif %}{% if block.settings.alignment != blank %} {{ block.settings.alignment }}{% endif %}">
+              <div class="custom__item-inner">
+                {% case block.type %}
+                  {% when 'image' %}
+                    {% if block.settings.image != blank %}
+                      <img class="img-fluid" src="{{ block.settings.image | img_url: '1200x' }}" alt="image">
+                    {% else %}
+                      {{ 'image' | placeholder_svg_tag: 'placeholder-svg' }}
+                    {% endif %}
+                  {% when 'text' %}
+                    <div class="text">
+                      {% if block.settings.title != blank %}
+                        <div class="title_block">{{ block.settings.title | escape }}</div>
+                      {% endif %}
+                      {% if block.settings.text != blank %}
+                        <div class="rte-setting">{{ block.settings.text }}</div>
+                      {% endif %}
+                    </div>
+                  {% when 'html' %}
+                    {% if block.settings.code != blank %}
+                      {{ block.settings.code }}
+                    {% endif %}
+                  {% when 'newsletter' %}
+                    {% if block.settings.title != blank %}
+                      <div class="title_block text-center">
+                        {{ block.settings.title }}
+                        <div class="sub_title">{{ block.settings.sub_title }}</div>
+                      </div>
+                    {% endif %}
+                    {% form 'customer' %}
+                      {{ form.errors | default_errors }}
+                      {% if form.posted_successfully? %}
+                        <p class="form--success text-center mb-25">{{ 'general.newsletter_form.confirmation' | t }}</p>
+                      {% else %}
+                        <div class="input-group">
+                          <input type="hidden" name="contact[tags]" value="newsletter">
+                          <input type="email"
+                            name="contact[email]"
+                            class="input-group__field newsletter__input"
+                            value="{% if customer %}{{ customer.email }}{% endif %}"
+                            placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}">
+                          <span class="input-group__btn">
+                            <button type="submit" class="btn newsletter__submit" name="commit">
+                              <span class="newsletter__submit-text--large">{{ 'general.newsletter_form.submit' | t }}</span>
+                            </button>
+                          </span>
+                        </div>
+                      {% endif %}
+                    {% endform %}
+                  {% when 'social' %}
+                    {% include 'nov-social' %}
+                  {% when 'collection_tab' %}
+                    <div class="box-margin">
+                      <div class="box-padding">                        
+                        <div class="page-width nov-collection-tabs{% if block.settings.class != blank %} {{ block.settings.class }}{% endif %} nov-collection-tabs-slider {{ block.settings.style_tabs }}">
+                          <div id="product-tabs-categories-{{ block.id }}" class="block product-tabs-categories">
+                            {% if block.settings.title != blank %}
+                              <div class="title_block {{ block.settings.title_alignment }}{% if block.settings.title_alignment == 'text-left' and block.settings.tab_align == 'right' %} alignment{% endif %}{% if block.settings.tab_title_1 == blank and block.settings.tab_title_2 == blank and block.settings.tab_title_3 == blank %} no_tab{% endif %}">
+                                {{ block.settings.title }}
+                                <div class="sub_title">{{ block.settings.sub_title }}</div>
+                              </div>
+                            {% endif %}
+                            {%- assign collection = collections[block.settings.collection] -%}
+
+                            {%- assign img_size = settings.img_size_large -%}
+                            {% if block.settings.grid_number == '5' %}
+                              {%- assign grid_item_width = 'col-lg-cus-5' -%}
+                            {% else %}
+                              {%- assign grid_item_width = 12 | divided_by: block.settings.grid_number | prepend: 'col-lg-' -%}
+                            {% endif %}
+
+                            {% if block.settings.grid_number_tablet == '5' %}
+                              {%- assign col_tablet = 'col-md-cus-5' -%}
+                            {% else %}
+                              {%- assign col_tablet = 12 | divided_by: block.settings.grid_number_tablet | prepend: 'col-md-' -%}
+                            {% endif %}
+
+                            {%- assign col_mobile = 12 | divided_by: block.settings.grid_number_mobile | prepend: 'col-xs-' -%}
+
+                            
+                            <ul id="collection_tab" class="nav nav-tabs{% if block.settings.tab_align == 'center' %} justify-content-center{% elsif block.settings.tab_align == 'right' %} justify-content-end{% else %}{% endif %} flex-nowrap" role="tablist">
+                              {% if block.settings.tab_title_1 != blank %}
+                                <li class="nav-item">
+                                  <a class="nav-link active" href="#producttab1" role="tab" data-toggle="tab" data-collection="{{ block.settings.collection_handle_1 }}">
+                                    <span class="content-nav">
+                                      {% if block.settings.image_icon != blank %}
+                                      <img class="nav-imageicon" src="{{ block.settings.image_icon_1 | img_url: '150x' }}" alt="{{ block.settings.tab_title_1 }}">
+                                      {% endif %}
+                                      <span class="ml-5">{{ block.settings.tab_title_1 }}</span>
+                                    </span>
+                                  </a>
+                                </li>
+                              {% endif %}
+                              {% if block.settings.tab_title_2 != blank %}
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#producttab2" role="tab" data-toggle="tab" data-collection="{{ block.settings.collection_handle_2 }}">
+                                    <span class="content-nav">
+                                      {% if block.settings.image_icon != blank %}
+                                      <img class="nav-imageicon" src="{{ block.settings.image_icon_2 | img_url: '150x' }}" alt="{{ block.settings.tab_title_2 }}">
+                                      {% endif %}
+                                      <span class="ml-5">{{ block.settings.tab_title_2 }}</span>
+                                    </span>
+                                  </a>
+                                </li>
+                              {% endif %}
+                              {% if block.settings.tab_title_3 != blank %}
+                                <li class="nav-item">
+                                  <a class="nav-link" href="#producttab3" role="tab" data-toggle="tab" data-collection="{{ block.settings.collection_handle_3 }}">
+                                    <span class="content-nav">
+                                      {% if block.settings.image_icon != blank %}
+                                      <img class="nav-imageicon" src="{{ block.settings.image_icon_3 | img_url: '150x' }}" alt="{{ block.settings.tab_title_3 }}">
+                                      {% endif %}
+                                      <span class="ml-5">{{ block.settings.tab_title_3 }}</span>
+                                    </span>
+                                  </a>
+                                </li>
+                              {% endif %}
+                            </ul>
+                            {%- assign limit = block.settings.limit  -%}
+                            <div class="product_tab_content tab-content">
+                              {% if block.settings.collection_handle_1 != blank %}
+                                {%- assign category = block.settings.collection_handle_1 -%}
+                                <div id="producttab1" class="tab-pane fade show active" role="tabpanel">
+                                  <div class="{% if block.settings.type_product != '3' %}grid--view-items{% else %}list--view-items{% endif %} nov-slick-carousel"
+                                    data-items="{{ block.settings.grid_number }}"
+                                    data-items_lg_tablet="{{ block.settings.grid_number_lg_tablet }}"
+                                    data-items_tablet="{{ block.settings.grid_number_tablet }}"
+                                    data-items_mobile="{{ block.settings.grid_number_mobile }}"
+                                    data-row="{{ block.settings.row_number }}"
+                                    data-loop="true"
+                                    data-dots="{{ block.settings.show_dots }}"
+                                    data-nav="{{ block.settings.show_nav }}"
+                                    data-autoplay="false"
+                                    data-autoplayTimeout="6000">
+                                  {% for product in collections[category].products limit:limit %}
+                                    <div class="item">
+                                      {% if block.settings.type_product != '3' %}
+                                        {% include 'product-card-grid', img_size: img_size %}
+                                        {% else %}
+                                        <div class="item-product d-flex{% if forloop.last == false %} mb-20{% endif %}">
+                                          <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                            <a href="{{ product.url | within: collection }}">
+                                              <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                              {% for image in product.images %}
+                                                {% if forloop.first != true %}
+                                                  <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                                  {% break %}
+                                                {% endif %}
+                                              {% endfor %}
+                                            </a>
+                                          </div>
+
+                                          <div class="product__info ml-30 ml-md-10 pb-xs-50">
+                                            <div class="product__review mb-5">
+                                              <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                            </div>
+                                            <div class="product__title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                                            <div class="product__price">
+                                              {% include 'product-price' %}
+                                            </div>
+                                            {% include 'group_buttons' %}
+                                          </div>
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  {% endfor %}
+                                  </div>
+                                </div>
+                              {% endif %}
+                              {% if block.settings.collection_handle_2 != blank %}
+                                {%- assign category = block.settings.collection_handle_2 -%}
+                                <div id="producttab2" class="tab-pane fade" role="tabpanel">
+                                  <div class="{% if block.settings.type_product != '3' %}grid--view-items{% else %}list--view-items{% endif %} nov-slick-carousel"
+                                    data-items="{{ block.settings.grid_number }}"
+                                    data-items_lg_tablet="{{ block.settings.grid_number_lg_tablet }}"
+                                    data-items_tablet="{{ block.settings.grid_number_tablet }}"
+                                    data-items_mobile="{{ block.settings.grid_number_mobile }}"
+                                    data-row="{{ block.settings.row_number }}"
+                                    data-loop="true"
+                                    data-dots="{{ block.settings.show_dots }}"
+                                    data-nav="{{ block.settings.show_nav }}"
+                                    data-autoplay="false"
+                                    data-autoplayTimeout="6000">
+                                  {% for product in collections[category].products limit:limit %}
+                                    <div class="item">
+                                      {% if block.settings.type_product != '3' %}
+                                        {% include 'product-card-grid', img_size: img_size %}
+                                        {% else %}
+                                        <div class="item-product d-flex{% if forloop.last == false %} mb-20{% endif %}">
+                                          <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                            <a href="{{ product.url | within: collection }}">
+                                              <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                              {% for image in product.images %}
+                                                {% if forloop.first != true %}
+                                                  <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                                  {% break %}
+                                                {% endif %}
+                                              {% endfor %}
+                                            </a>
+                                          </div>
+
+                                          <div class="product__info ml-30 ml-md-10 pb-xs-50">
+                                            <div class="product__review mb-5">
+                                              <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                            </div>
+                                            <div class="product__title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                                            <div class="product__price">
+                                              {% include 'product-price' %}
+                                            </div>
+                                            {% include 'group_buttons' %}
+                                          </div>
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  {% endfor %}
+                                  </div>
+                                </div>
+                              {% endif %}
+                              {% if block.settings.collection_handle_3 != blank %}
+                                {%- assign category = block.settings.collection_handle_3 -%}
+                                <div id="producttab3" class="tab-pane fade" role="tabpanel">
+                                  <div class="{% if block.settings.type_product != '3' %}grid--view-items{% else %}list--view-items{% endif %} nov-slick-carousel"
+                                    data-items="{{ block.settings.grid_number }}"
+                                    data-items_lg_tablet="{{ block.settings.grid_number_lg_tablet }}"
+                                    data-items_tablet="{{ block.settings.grid_number_tablet }}"
+                                    data-items_mobile="{{ block.settings.grid_number_mobile }}"
+                                    data-row="{{ block.settings.row_number }}"
+                                    data-loop="true"
+                                    data-dots="{{ block.settings.show_dots }}"
+                                    data-nav="{{ block.settings.show_nav }}"
+                                    data-autoplay="false"
+                                    data-autoplayTimeout="6000">
+                                  {% for product in collections[category].products limit:limit %}
+                                    <div class="item">
+                                      {% if block.settings.type_product != '3' %}
+                                        {% include 'product-card-grid', img_size: img_size %}
+                                        {% else %}
+                                        <div class="item-product d-flex{% if forloop.last == false %} mb-20{% endif %}">
+                                          <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                            <a href="{{ product.url | within: collection }}">
+                                              <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                              {% for image in product.images %}
+                                                {% if forloop.first != true %}
+                                                  <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '160x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                                  {% break %}
+                                                {% endif %}
+                                              {% endfor %}
+                                            </a>
+                                          </div>
+
+                                          <div class="product__info ml-30 ml-md-10 pb-xs-50">
+                                            <div class="product__review mb-5">
+                                              <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                            </div>
+                                            <div class="product__title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                                            <div class="product__price">
+                                              {% include 'product-price' %}
+                                            </div>
+                                            {% include 'group_buttons' %}
+                                          </div>
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  {% endfor %}
+                                  </div>
+                                </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>                       
+                      </div>
+                    </div>
+                  {% when 'product_deals' %}
+                    <div class="box-margin">
+                      <div class="box-padding">
+                        {% if block.settings.title != blank %}
+                          <div class="title_block {{ 'block.settings.title_alignment' }}">
+                            {{ block.settings.title }}
+                            <div class="sub_title">{{ block.settings.sub_title }}</div>
+                          </div>
+                        {% endif %}
+                        
+                        <div class="nv-slick-slider row"
+                          data-items="{{ block.settings.grid_number }}"
+                          data-items_tablet="{{ block.settings.grid_number_tablet }}"
+                          data-items_lg_tablet="{{ block.settings.grid_number_lg_tablet }}"
+                          data-items_mobile="{{ block.settings.grid_number_mobile }}"
+                          data-row="{{ block.settings.row_number }}"
+                          data-loop="false"
+                          data-dots="{{ block.settings.show_dots }}"
+                          data-nav="{{ block.settings.show_nav }}"
+                          data-autoplay="false"
+                          data-autoplayTimeout="6000">
+                          {% if block.settings.product_handle_1 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_1] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_2 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_2] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_3 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_3] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_4 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_4] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_5 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_5] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_6 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_6] %}
+                            <div class="item col">
+                              <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                          <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '425x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                          {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+                                <div class="product__info {{ block.settings.style_product }}">
+                                  {% if block.settings.style_product == 'style_1' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                  <div class="product__review">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  {% endif %}
+
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {% if block.settings.style_product == 'style_2' %}
+                                    {%- if block.settings.countdown_timeend_1 != blank -%}
+                                      {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                      <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                    {%- endif -%}
+                                  {% endif %}
+
+                                  {% include 'group_buttons', justify: 'justify-content-center' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% when 'product_thumb' %}
+                    <div class="box-margin">
+                      <div class="box-padding">
+                        {% if block.settings.title != blank %}
+                          <div class="title_block {{ 'block.settings.title_alignment' }}">
+                            {{ block.settings.title }}
+                            <div class="sub_title">{{ block.settings.sub_title }}</div>
+                          </div>
+                        {% endif %}
+                        <div class="nv-owl-carousel owl-carousel owl-theme"
+                          data-items="1"
+                          data-items_tablet="1"
+                          data-items_lg_tablet="1"
+                          data-items_mobile="1"
+                          data-loop="true"
+                          data-dots="false"
+                          data-nav="true"
+                          data-autoplay="false">
+                          {% if block.settings.product_handle_1 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_1] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_2 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_2] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_3 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_3] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_4 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_4] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_5 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_5] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                          {% if block.settings.product_handle_6 != blank %}
+                            {% assign product = all_products[block.settings.product_handle_6] %}
+                            <div class="item-product{% unless product.available %} product-price--sold-out{% endunless %} type_2">
+                              <div class="row align-items-center no-gutters">
+                                <div class="thumbnail-container d-lg-flex flex-lg-row-reverse align-items-center{% if product.images.size > 2 %} has-multiimage{% endif %} col-lg-8 col-md-7 mb-xs-30">
+                                  <div class="slider-for slider-for-1" data-asnavfornav=".slider-nav-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '410x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                  <div class="slider-nav slider-nav-1 d-flex align-items-center" data-asnavforfor=".slider-for-1">
+                                    {% for image in product.images %}
+                                      <div class="thumbItem">
+                                        <img class="img-fluid product__thumbnail lazyload" src="{{ image.src | img_url: '80x' }}" alt="{{ image.alt | escape }}">
+                                      </div>
+                                    {% endfor %}
+                                  </div>
+                                </div>
+
+                                <div class="product__info col-lg-4 col-md-5">
+                                  <div class="type_product">{{ product.type | link_to_type }}</div>
+                                  <div class="product__title">
+                                    <a href="{{ product.url | within: collection }}">{{ product.title | truncatewords: 12 }}</a>
+                                  </div>
+
+                                  {% if settings.show_rating %}
+                                    <div class="product__review mb-10">
+                                      <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                    </div>
+                                  {% endif %}
+
+                                  <div class="product__price mb-25">
+                                    {% include 'product-price' %}
+                                  </div>
+
+                                  {%- if block.settings.countdown_timeend_1 != blank -%}
+                                    {%- assign countdownTime = block.settings.countdown_timeend_1 -%}
+                                    <div class="countdownfree" data-countdown="{{ countdownTime }}"></div>
+                                  {%- endif -%}
+
+                                  {% include 'group_buttons' %}
+                                </div>
+                              </div>
+                            </div>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  {% when 'product_list' %}
+                    <div class="nov-group-product-list">
+                      {% if block.settings.title != blank %}
+                        <div class="title_block">
+                          {{ block.settings.title }}
+                          <div class="sub_title">{{ block.settings.sub_title }}</div>
+                        </div>
+                      {% endif %}
+                      <div class="nv-slick-slider row"
+                        data-items="{{ block.settings.grid_number }}"
+                        data-items_tablet="{{ block.settings.grid_number_tablet }}"
+                        data-items_lg_tablet="{{ block.settings.grid_number_lg_tablet }}"
+                        data-items_mobile="{{ block.settings.grid_number_mobile }}"
+                        data-row="{{ block.settings.row_number }}"
+                        data-loop="true"
+                        data-dots="{{ block.settings.show_dots }}"
+                        data-nav="{{ block.settings.show_nav }}"
+                        data-autoplay="false"
+                        data-autoplayTimeout="6000">
+                          {%- assign category = block.settings.collection -%}
+                          {% for product in collections[category].products limit:block.settings.limit %}
+                            <div class="item col">
+                              <div class="item-product d-flex{% if forloop.last == false %} mb-30{% endif %}">
+                                <div class="thumbnail-container{% if product.images.size > 2 %} has-multiimage{% endif %}">
+                                  <a href="{{ product.url | within: collection }}">
+                                    <img class="img-fluid product__thumbnail lazyload" src="{{ product.featured_image | product_img_url: '110x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                    {% for image in product.images %}
+                                      {% if forloop.first != true %}
+                                        <img class="img-fluid product__thumbnail-second" src="{{ image.src | product_img_url: '110x' }}" alt="{{ product.featured_image.alt | escape }}">
+                                        {% break %}
+                                      {% endif %}
+                                    {% endfor %}
+                                  </a>
+                                </div>
+
+                                <div class="product__info ml-30 ml-md-10">
+                                  <div class="product__review mb-5">
+                                    <div class="rating"><span class="shopify-product-reviews-badge" data-id="{{ product.id }}"></span></div>
+                                  </div>
+                                  <div class="product__title"><a href="{{ product.url | within: collection }}">{{ product.title }}</a></div>
+                                  <div class="product__price">
+                                    {% include 'product-price' %}
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          {% endfor %}
+                        </div>
+                      </div>
+                    </div>
+                {% endcase %}
+              </div>
+            </div>
+
+          {% endfor %}
+        </div>
+      </div>
+      {% if section.blocks.size == 0 %}
+        {% include 'no-blocks' %}
+      {% endif %}
+    {% if section.settings.has_fullwidth == false %}
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Custom content",
+    "class": "section-custom",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "Custom content"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default":   false
+      },
+      {
+        "type": "text",
+        "id": "distance_top",
+        "label": "Top Distance Section",
+        "default": "30px"
+      },
+      {
+        "type": "text",
+        "id": "distance_bottom",
+        "label": "Bottom Distance Section",
+        "default": "30px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Alignment",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Alignment",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "name": "Custom HTML",
+        "settings": [
+          {
+            "type": "html",
+            "id": "code",
+            "label": "HTML"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Alignment",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          }
+        ]
+      },
+      {
+        "type": "social",
+        "name": "Social",
+        "settings": [
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "alignment",
+            "label": "Alignment",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          }
+        ]
+      },
+      {
+        "type": "collection_tab",
+        "name": "Collection Tabs",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "select",
+            "id": "title_alignment",
+            "label": "Title alignment",
+            "default": "text-left",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type":  "header",
+            "content": "Product Option"
+          },
+          {
+            "type": "range",
+            "id": "limit",
+            "min": 4,
+            "max": 30,
+            "step": 1,
+            "label": "Limit",
+            "default": 8,
+            "info": "Select number limit products"
+          },
+          {
+            "type": "select",
+            "id": "grid_number",
+            "label": "Products per row (Large Desktop)",
+            "default": "3",
+            "options": [
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_lg_tablet",
+            "label": "Products per row (Desktop)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_tablet",
+            "label": "Products per row (Tablet)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_mobile",
+            "label": "Products per row (mobile)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "row_number",
+            "label": "Number row",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              }
+            ]
+          },
+          {
+            "type":  "header",
+            "content": "Design Option"
+          },
+          {
+            "type": "select",
+            "id": "tab_align",
+            "label": "Tab Align",
+            "default": "center",
+            "options": [
+              {
+                "value": "left",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show Dots (Only with Slider View)",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_nav",
+            "label": "Show Navigation (Only with Slider View)",
+            "default": true
+          },
+          {
+            "type": "checkbox",
+            "id": "show_product_type",
+            "label": "Show Product Type",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "type_product",
+            "label": "Type Product",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type":  "header",
+            "content": "Nav Tabs"
+          },
+          {
+            "type": "select",
+            "id": "style_tabs",
+            "label": "Style Nav Tabs",
+            "options": [
+              {
+                "value": "tab_style_1",
+                "label": "1"
+              },
+              {
+                "value": "tab_style_2",
+                "label": "2"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "tab_title_1",
+            "label": "Tab Title 1"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle_1",
+            "label": "Collection 1"
+          },
+          {
+            "type": "text",
+            "id": "tab_title_2",
+            "label": "Tab Title 2"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle_2",
+            "label": "Collection 2"
+          },
+          {
+            "type": "text",
+            "id": "tab_title_3",
+            "label": "Tab Title 3"
+          },
+          {
+            "type": "collection",
+            "id": "collection_handle_3",
+            "label": "Collection 3"
+          }
+        ]
+      },
+      {
+        "type": "product_deals",
+        "name": "Product Deals",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "select",
+            "id": "title_alignment",
+            "label": "Title alignment",
+            "default": "text-left",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "select",
+            "id": "grid_number",
+            "label": "Products per row (Large Desktop)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_lg_tablet",
+            "label": "Products per row (Desktop)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_tablet",
+            "label": "Products per row (Tablet)",
+            "default": "2",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_mobile",
+            "label": "Products per row (mobile)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "row_number",
+            "label": "Number row",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              }
+            ]
+          },
+          {
+            "type":  "header",
+            "content": "Design Option"
+          },
+          {
+            "type": "select",
+            "id": "style_product",
+            "label": "Style Product",
+            "default": "style_1",
+            "options": [
+              {
+                "value": "style_1",
+                "label": "1"
+              },
+              {
+                "value": "style_2",
+                "label": "2"
+              }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show Dots",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_nav",
+            "label": "Show Navigation",
+            "default": true
+          },
+          {
+            "type": "header",
+            "content": "Product 1"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_1",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_1",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 2"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_2",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_2",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 3"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_3",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_3",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 4"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_4",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_4",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 5"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_5",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_5",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 6"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_6",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_6",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          }
+        ]
+      },
+      {
+        "type": "product_thumb",
+        "name": "Product Thumb",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "select",
+            "id": "title_alignment",
+            "label": "Title alignment",
+            "default": "text-left",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "header",
+            "content": "Product 1"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_1",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_1",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 2"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_2",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_2",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 3"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_3",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_3",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 4"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_4",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_4",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 5"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_5",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_5",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          },
+          {
+            "type": "header",
+            "content": "Product 6"
+          },
+          {
+            "type": "product",
+            "id": "product_handle_6",
+            "label": "Product"
+          },
+          {
+            "type": "header",
+            "content": "Countdown timer"
+          },
+          {
+            "type": "text",
+            "id": "countdown_timeend_6",
+            "label": "Time End",
+            "placeholder": "YYYY\/MM\/DD"
+          },
+          {
+            "type": "paragraph",
+            "content": "Format: 'Year\/Month\/Day'"
+          },
+          {
+            "type": "paragraph",
+            "content": "Example: '2019\/01\/30'"
+          }
+        ]
+      },
+      {
+        "type": "product_list",
+        "name": "Product List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "text",
+            "id": "sub_title",
+            "label": "Sub Title"
+          },
+          {
+            "type": "select",
+            "id": "title_alignment",
+            "label": "Title alignment",
+            "default": "text-left",
+            "options": [
+              {
+                "value": "text-left",
+                "label": "Left"
+              },
+              {
+                "value": "text-center",
+                "label": "Center"
+              },
+              {
+                "value": "text-right",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width",
+            "label": "Container width (Large Desktop)",
+            "default": "col-xl-6",
+            "options": [
+              {
+                "value": "col-xl-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-xl-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-xl-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-xl-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-xl-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-xl-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-xl-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-xl-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-xl-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-xl-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_lg",
+            "label": "Container width (Desktop)",
+            "default": "col-lg-6",
+            "options": [
+              {
+                "value": "col-lg-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-lg-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-lg-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-lg-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-lg-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-lg-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-lg-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-lg-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-lg-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-lg-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "width_md",
+            "label": "Container width(Tablet)",
+            "default": "col-md-6",
+            "options": [
+              {
+                "value": "col-md-2",
+                "label": "2/12"
+              },
+              {
+                "value": "col-md-3",
+                "label": "3/12"
+              },
+              {
+                "value": "col-md-4",
+                "label": "4/12"
+              },
+              {
+                "value": "col-md-5",
+                "label": "5/12"
+              },
+              {
+                "value": "col-md-6",
+                "label": "6/12"
+              },
+              {
+                "value": "col-md-7",
+                "label": "7/12"
+              },
+              {
+                "value": "col-md-8",
+                "label": "8/12"
+              },
+              {
+                "value": "col-md-9",
+                "label": "9/12"
+              },
+              {
+                "value": "col-md-10",
+                "label": "10/12"
+              },
+              {
+                "value": "col-md-12",
+                "label": "12/12"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "range",
+            "id": "limit",
+            "min": 4,
+            "max": 30,
+            "step": 1,
+            "label": "Limit",
+            "default": 8,
+            "info": "Select number limit products"
+          },
+          {
+            "type": "select",
+            "id": "grid_number",
+            "label": "Products per row (Large Desktop)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_lg_tablet",
+            "label": "Products per row (Desktop)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_tablet",
+            "label": "Products per row (Tablet)",
+            "default": "2",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "grid_number_mobile",
+            "label": "Products per row (mobile)",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "row_number",
+            "label": "Number row",
+            "default": "1",
+            "options": [
+              {
+                "value": "1",
+                "label": "1"
+              },
+              {
+                "value": "2",
+                "label": "2"
+              },
+              {
+                "value": "3",
+                "label": "3"
+              },
+              {
+                "value": "4",
+                "label": "4"
+              },
+              {
+                "value": "5",
+                "label": "5"
+              },
+              {
+                "value": "6",
+                "label": "6"
+              }
+            ]
+          },
+          {
+            "type":  "header",
+            "content": "Design Option"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_dots",
+            "label": "Show Dots",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "show_nav",
+            "label": "Show Navigation",
+            "default": true
+          },
+          {
+            "type": "collection",
+            "id": "collection",
+            "label": "Collection"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Custom content",
+        "category": "Advanced layout",
+        "blocks": [
+          {
+            "type": "text"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

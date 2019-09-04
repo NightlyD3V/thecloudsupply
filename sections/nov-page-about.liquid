@@ -1,0 +1,262 @@
+<div class="page-width">
+  {% if section.settings.has_fullwidth == false %}
+    <div class="container">
+  {% endif %}
+    {% if section.settings.title != blank %}
+      <div class="section-header text-center">
+        <h4 class="h2">{{ section.settings.title | escape }}</h4>
+      </div>
+    {% endif %}
+
+    <div class="about-content">
+      <div class="about-item row d-flex">
+        {% for block in section.blocks%}        
+          {% if block.type == 'image' %}
+            <div class="about-image {{ block.settings.class }}">
+              <img class="img-fluid" src="{{ block.settings.image | img_url: '590x' }}" alt="">
+            </div>
+          {% endif %}
+
+          {% if block.type == 'text' %}
+            <div class="about-text {{ block.settings.class }}">
+              <div class="medium-up--text-{{ block.settings.align_text }}">
+                {% if block.settings.title != blank %}
+                  <h4 class="title-block">{{ block.settings.title | escape }}</h4>
+                {% endif %}
+                {% if block.settings.text != blank %}
+                  <div class="rte-setting">{{ block.settings.text | nofilter }}</div>
+                {% endif %}
+              </div>
+            </div>
+          {% endif %}
+
+          {% if block.type == 'html' %}
+            <div class="about-item about-html {{ block.settings.class }}">
+              {% if block.settings.code != blank %}
+                {{ block.settings.code }}
+              {% endif %}
+            </div>
+          {% endif %}
+
+          {% if block.type == 'testimonial' %}
+            <div class="about-testimonial {{ block.settings.class }}">
+              <div class="page-width section-testimonial-{{ section.id }}">
+                {% if block.settings.title != blank %}
+                  <div class="title-block">{{ block.settings.title | escape }}</div>
+                {% endif %}
+                <div class="testimonial-wrapper">
+                  <div class="testimonials-slider owl-carousel owl-theme">
+                    <div class="testimonial-item">
+                      {% if block.settings.author != blank %}
+                        <div class="testimonial-item__name">{{ block.settings.author }}</div>
+                      {% endif %}
+                      {% if block.settings.info_other != blank %}
+                        <div class="testimonial-item__info">{{ block.settings.info_other }}</div>
+                      {% endif %}
+                      {% if block.settings.quote != blank %}
+                        <div class="testimonial-item__text mt-20">{{ block.settings.quote }}</div>
+                      {% endif %}
+                    </div>
+                    <div class="testimonial-item">
+                      {% if block.settings.author_2 != blank %}
+                        <div class="testimonial-item__name">{{ block.settings.author_2 }}</div>
+                      {% endif %}
+                      {% if block.settings.info_other_2 != blank %}
+                        <div class="testimonial-item__info">{{ block.settings.info_other_2 }}</div>
+                      {% endif %}
+                      {% if block.settings.quote_2 != blank %}
+                        <div class="testimonial-item__text mt-20">{{ block.settings.quote_2 }}</div>
+                      {% endif %}
+                    </div>
+                    <div class="testimonial-item">
+                      {% if block.settings.author_3 != blank %}
+                        <div class="testimonial-item__name mt-15">{{ block.settings.author_3 }}</div>
+                      {% endif %}
+                      {% if block.settings.info_other_3 != blank %}
+                        <div class="testimonial-item__info">{{ block.settings.info_other_3 }}</div>
+                      {% endif %}
+                      {% if block.settings.quote_3 != blank %}
+                        <div class="testimonial-item__text mt-20">{{ block.settings.quote_3 }}</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {% include 'nov-social' %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  {% if section.settings.has_fullwidth == false %}
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+  {
+    "name": "About content",
+    "class": "index-section p-0",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Heading",
+        "default": "About content"
+      },
+      {
+        "type": "checkbox",
+        "id": "has_fullwidth",
+        "label": "Full Width",
+        "default":   false
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Talk about your brand"
+          },
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Use this text to share information about your brand with your customers. Describe a product, share announcements, or welcome customers to your store.</p>"
+          }
+        ]
+      },
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      },
+      {
+        "type": "html",
+        "name": "Custom HTML",
+        "settings": [
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "html",
+            "id": "code",
+            "label": "HTML"
+          }
+        ]
+      },
+      {
+        "type": "testimonial",
+        "name": "Testimonial",
+        "settings": [
+          {
+            "type": "text",
+            "id": "class",
+            "label": "Class"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title"
+          },
+          {
+            "type": "image_picker",
+            "id": "avatar",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "author",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "text",
+            "id": "info_other",
+            "label": "Info other",
+            "default": "Australia"
+          },
+          {
+            "type": "textarea",
+            "id": "quote",
+            "label": "Text"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 2"
+          },
+          {
+            "type": "image_picker",
+            "id": "avatar_2",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "author_2",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "text",
+            "id": "info_other_2",
+            "label": "Info other",
+            "default": "Australia"
+          },
+          {
+            "type": "textarea",
+            "id": "quote_2",
+            "label": "Text"
+          },
+          {
+            "type": "header",
+            "content": "Testimonial 3"
+          },
+          {
+            "type": "image_picker",
+            "id": "avatar_3",
+            "label": "Image"
+          },
+          {
+            "type": "text",
+            "id": "author_3",
+            "label": "Author",
+            "default": "Author's name"
+          },
+          {
+            "type": "text",
+            "id": "info_other_3",
+            "label": "Info other",
+            "default": "Australia"
+          },
+          {
+            "type": "textarea",
+            "id": "quote_3",
+            "label": "Text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

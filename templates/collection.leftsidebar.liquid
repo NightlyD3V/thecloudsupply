@@ -1,0 +1,18 @@
+{% comment %}
+  The contents of the collection.liquid template can be found in /sections/collection-template.liquid
+{% endcomment %}
+
+{% include 'nov-breadcrumb' %}
+
+<div class="page-width">
+    <div class="container">
+        <div class="row">
+          <div class="sidebar sidebar-collection col-lg-3 col-md-3 flex-xs-unordered">
+            {% section 'nov-sidebar' %}
+          </div>
+          <div class="col-lg-9 col-md-9 flex-xs-first">
+            {% section 'collection-template' %}
+          </div>
+        </div>
+    </div>
+</div>

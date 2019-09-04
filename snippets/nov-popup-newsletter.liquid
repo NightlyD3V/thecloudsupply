@@ -1,0 +1,50 @@
+<!-- Popup newsletter -->
+{% if settings.show_newsletter_popup == true %}
+  {% form 'customer' %}
+    {{ form.errors | default_errors }}
+    {% if form.posted_successfully? %}
+      <div id="popupAlert" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered justify-content-center" role="document">
+          <div class="modal-content">
+              <p class="form--success alert-success text-center mb-0">{{ 'general.newsletter_form.confirmation' | t }}</p>
+          </div>
+        </div>
+      </div>
+    {% else %}
+      <div id="popup-subscribe" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+          <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><i class="zmdi zmdi-hc-fw zmdi-close"></i></button>
+                  </div>
+                  <div class="modal-body">
+                    <div class="subscribe_form">
+                      <div class="inner">
+                          <div class="title_block">{{ settings.title_newsletter }}</div>
+                          <p>{{ settings.desc_newsletter }}</p>
+                          <div class="input-subscribe-wrap input-group">
+                            <input type="hidden" name="contact[tags]" value="newsletter">
+                            <input type="email"
+                              name="contact[email]"
+                              class="inputNew form-control grey newsletter-input"
+                              value=""
+                              placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}">
+                            <span class="input-group-btn">
+                              <button type="submit" name="commit" class="btn btn-primary">{{ settings.button_newsletter }}</button>
+                            </span>
+                          </div>
+                          <div class="checkbox">
+                            <span class="custom-checkbox">
+                                <input name="no-view" class="no-view" type="checkbox">
+                            </span>
+                            <span>{{ settings.notify_newsletter }}</span>
+                          </div>
+                      </div>
+                    </div>
+                  </div>
+              </div>
+          </div>
+      </div>
+    {% endif %}
+  {% endform %}
+{% endif %}

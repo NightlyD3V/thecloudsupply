@@ -1,0 +1,28 @@
+<div id="popup-Cart" class="modal fade" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="jsPopupview modal-dialog modal-sm modal-dialog-centered justify-content-center" role="document"></div>
+</div>
+
+<div id="PopupCartModal" class="hidden hide">
+    <div class="modal-content">
+        <div class="modal-header">
+            <button type="button" class="close popupCartClose" data-dismiss="modal" aria-label="Close"><i class="zmdi zmdi-hc-fw zmdi-close"></i></button>
+        </div>
+        <div class="modal-body">
+            <div class="proBoxPrimary row spacing-15">
+                <div class="proBoxImage col-lg-4 col-md-4 col-sm-4">
+                    <div class="proFeaturedImage">
+                        <img class="img-fluid proImageProduct" src="{{ 'loading.gif' | asset_url }}" alt="Quickview"/>
+                    </div>
+                </div>
+                <div class="proBoxInfo col-lg-8 col-md-8 col-sm-8">
+                    <div class="proName mb-5"></div>
+                    <p class="success-message mb-10">{{ 'general.popup_cart.success-message' | t }}</p>
+                    <div class="actions d-flex">
+                      <a href="#" class="btn continue-shopping mr-2">{{ 'general.popup_cart.continue-shopping' | t }}</a>
+                      <a href="{{ shop.secure_url }}/cart" class="btn">{{ 'general.popup_cart.go_to_cart' | t }}</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,32 @@
+<section id="content" class="page-content page-not-found row align-items-center">
+    <div class="content-404 col-lg-6 col-md-6 col-xs-12 text-center">
+        <div class="image">
+            <img class="img-fluid" src="{{ section.settings.image_1 | img_url: '1920x' }}" alt="Image 404">
+        </div>
+        <p class="h4">{{ 'general.404.title' | t }}</p>
+        <div class="info"><p>{{ 'general.404.subtext' | t }}</p></div>
+        <a class="btn btn-default" href="/"><i class="fa fa-home" aria-hidden="true"></i><span class="ml-15">{{ 'general.404.link' | t }}</span></a>
+    </div>
+    <div class="content-right-404 col-lg-6 col-md-6 d-sm-block">
+        <a href="/"><img class="img-fluid" src="{{ section.settings.image_2 | img_url: '1920x' }}" alt="image 404 right"></a>
+    </div>
+</section>
+
+{% schema %}
+  {
+    "name": "Vinova Page 404",
+    "class": "index-section",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "image_1",
+        "label": "Image 1"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_2",
+        "label": "Image 2"
+      }
+    ]
+  }
+{% endschema %}

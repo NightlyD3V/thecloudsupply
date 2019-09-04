@@ -1,0 +1,87 @@
+{% comment %}
+* 2013-2018 Vinovathemes
+* @author    Vinovathemes <vinovathemes@gmail.com>
+* @copyright 2013-2018 Vinovathemes SA
+{% endcomment %}
+
+<script>
+  var theme = {
+    strings: {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      showMore: {{ 'general.filters.show_more' | t | json }},
+      showLess: {{ 'general.filters.show_less' | t | json }},
+      addressError: {{ 'sections.map.address_error' | t | json }},
+      addressNoResults: {{ 'sections.map.address_no_results' | t | json }},
+      addressQueryLimit: {{ 'sections.map.address_query_limit_html' | t | json }},
+      authError: {{ 'sections.map.auth_error_html' | t | json }}
+    },
+    moneyFormat: {{ shop.money_format | json }},
+    moneyFormatnojson: {{ shop.money_format | json }}
+  }
+  window.ajaxcart_type = '{{settings.ajax_cart_method}}';
+  window.file_url = '{{""|file_url}}';
+  window.asset_url = '{{"hh"|asset_url|remove: "hh"}}';
+  window.sidebar_multichoise = true;
+  document.documentElement.className = document.documentElement.className.replace('no-js', 'js');
+</script>
+
+<!--[if (lte IE 9) ]>{{ 'match-media.min.js' | asset_url | script_tag }}<![endif]-->
+
+{{ 'jquery.2.2.4.min.js' | asset_url | script_tag }}
+
+{% if template.directory == 'customers' %}
+  <!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer="defer"></script><!--<![endif]-->
+  <!--[if lte IE 9]><script src="{{ 'shopify_common.js' | shopify_asset_url }}"></script><![endif]-->
+{% endif %}
+
+<!--[if (gt IE 9)|!(IE)]><!--><script src="{{ 'lazysizes.js' | asset_url }}" async="async"></script><!--<![endif]-->
+<!--[if lte IE 9]><script src="{{ 'lazysizes.min.js' | asset_url }}"></script><![endif]-->
+
+<script src="{{ 'vendor.js' | asset_url }}" defer="defer"></script>
+
+{{ 'api.jquery.js' | shopify_asset_url | script_tag }}
+{{ 'option_selection.js' | shopify_asset_url | script_tag }}
+{{ 'history.js' | asset_url | script_tag }}
+{{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+{{ 'jquery.currencies.min.js' | asset_url | script_tag }}
+
+
+<script src="{{ 'jquery.instafeed.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'jquery.owl.carousel.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'jquery.mmenu.all.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'jquery.sticky-kit.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'parallax.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'handlebars.min.js' | asset_url }}" defer="defer"></script>
+{% include 'ajax-cart-template' %}
+{% include 'ajax-productitem-template-type1' %}
+{% include 'ajax-productitem-template-type2' %}
+<script src="{{ 'ajax-cart.js' | asset_url }}" defer="defer"></script>
+<script>
+  jQuery(function($) {
+    ajaxCart.init({
+      formSelector: 'form[action^="/cart/add"]',
+      cartContainer: '#cart-info',
+      addToCartSelector: '.btnAddToCart',
+      cartCountSelector: '#CartCount',
+      cartCostSelector: '#CartCost',
+      moneyFormat: {{ shop.money_format | json }}
+    });
+  });
+
+  jQuery('body').on('afterCartLoad.ajaxCart', function(evt, cart) {
+    //timber.RightDrawer.open();
+  });
+</script>
+
+{% if template.name == 'product' %}
+<script src="{{ 'jquery.photoswipe.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'jquery.photoswipe-ui-default.min.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'jquery.elevatezoom.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+
+<script src="{{ 'jquery.countdown.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'theme.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'custom.js' | asset_url }}" defer="defer"></script>

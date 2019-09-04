@@ -1,0 +1,177 @@
+<div class="row">
+  {% for block in section.blocks %}
+    {% if block.type == 'link' %}
+      {%- assign footer_linklist = block.settings.menu_handle -%}
+      <div class="footer-menu footer-block footer-block__{{ forloop.index }} {{ block.settings.menu_class }}">
+          {% if block.settings.menu_title != blank %}
+          <div class="title-block">
+            {{ block.settings.menu_title }}
+          </div>
+          {% endif %}
+
+          {% if linklists[footer_linklist].links.size > 0 %}
+            <ul class="site-footer__linklist list-unstyled">
+              {% for link in linklists[footer_linklist].links %}
+                <li class="site-footer__linklist-item">
+                  <a href="{{ link.url }}">{{ link.title }}</a>
+                </li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.type == 'block_html' %}
+      <div class="footer-html footer-block footer-block__{{ forloop.index }} {{ block.settings.block_class }}">
+        {% if block.settings.block_title != blank %}
+        <div class="title-block">
+          {{ block.settings.block_title }}
+        </div>
+        {% endif %}z
+        {% if block.settings.img != blank %}
+          <img class="img-fluid" src="{{ block.settings.img | img_url: '200x' }}" alt="">
+        {% endif %}
+        {% if block.settings.html_content != blank %}
+        <div class="block-content">
+          {{ block.settings.html_content }}
+        </div>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if block.type == 'block_contact' %}
+      <div class="footer-contact footer-block footer-block__{{ forloop.index }} {{ block.settings.block_class }}">
+        {% if block.settings.block_title != blank %}
+        <div class="title-block">
+          {{ block.settings.block_title }}
+        </div>
+        {% endif %}
+        <div class="block-content">
+            {% if block.settings.contact_address != blank %}
+            <div class="contact d-flex">
+              <div class="icon-contact">
+                <i class="icon-home"></i>
+              </div>
+              <div class="address-content">
+                <div class="content-address"><b>Showroom:</b> {{ block.settings.contact_address }}</div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if block.settings.contact_hours != blank %}
+            <div class="contact d-flex">
+              <div class="icon-contact">
+                <i class="icon-hours"></i>
+              </div>
+              <div class="hours-content">
+                <div class="content-hours"><b>Opening Hours:</b> {{ block.settings.contact_hours }}</div>
+              </div>
+            </div>
+            {% endif %}
+
+            {% if block.settings.contact_email != blank %}
+              <div class="contact d-flex">
+                <div class="icon-contact">
+                  <i class="icon-email"></i>
+                </div>
+                <div class="email-content">
+                  <div class="email">{{ block.settings.contact_email }}<p>{{ block.settings.contact_email_2 }}</p></div>
+                </div>
+              </div>
+            {% endif %}
+
+            {% if block.settings.contact_phone != blank %}
+              <div class="contact d-flex">
+                <div class="icon-contact">
+                  <i class="icon-phone"></i>
+                </div>
+                <div class="phone-content">
+                  <div class="number">{{ block.settings.contact_phone }}<p>{{ block.settings.contact_phone_2 }}</p></div>
+                </div>
+              </div>
+            {% endif %}
+            
+            {% if block.settings.contact_fax != blank %}
+              <div class="contact d-flex">
+                {% if block.settings.contact_fax != blank %}
+                <div class="contact-fax">
+                  {{ block.settings.contact_fax }}
+                </div>
+                {% endif %}
+              </div>
+            {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.type == 'block_policy' %}
+      <div class="{{ block.settings.block_class }} d-flex nov-policy-item align-items-center">
+        <div class="image mb-lg-10"><img class="img-fluid" src="{{ block.settings.block_img | img_url: '100x' }}" alt=""></div>
+        <div class="content-text ml-25 ml-lg-0 text-uppercase">
+          <div class="title mb-5">{{ block.settings.block_title }}</div>
+          <div class="content">{{ block.settings.block_content }}</div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.type == 'block_newsletter' %}
+      <div class="newsletter btn_icon footer-block footer-block__{{ forloop.index }} {{ block.settings.block_class }}">
+        {% if block.settings.block_title != blank %}
+        <div class="title-block">
+          {{ block.settings.block_title }}
+        </div>
+        {% endif %}
+        <div class="block-content">
+          {% if block.settings.newsletter_des != blank %}
+          <div class="des">{{ block.settings.newsletter_des }}</div>
+          {% endif %}
+          <div class="site-footer__newsletter">
+            {% form 'customer' %}
+              {{ form.errors | default_errors }}
+              {% if form.posted_successfully? %}
+                <p class="form--success">{{ 'general.newsletter_form.confirmation' | t }}</p>
+              {% else %}
+                <div class="input-group">
+                  <input type="hidden" name="contact[tags]" value="newsletter">
+                  <input type="email"
+                    name="contact[email]"
+                    class="form-control input-group__field newsletter__input"
+                    value="{% if customer %}{{ customer.email }}{% endif %}"
+                    placeholder="{{ 'general.newsletter_form.email_placeholder' | t }}">
+                  <span class="input-group__btn">
+                    <button type="submit" class="btn newsletter__submit" name="commit">
+                      <span class="newsletter__submit-text--large">
+                      {{ 'general.newsletter_form.submit' | t }}
+                      <!-- <i class="zmdi zmdi-email"></i> -->
+                      </span>
+                    </button>
+                  </span>
+                </div>
+              {% endif %}
+            {% endform %}
+          </div>
+          {% if section.settings.show_payment_icons == true %}
+            <img src="{{ section.settings.payment_icons | img_url: '400x' }}" alt="img">
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+
+    {% if block.type == 'block_follow_openhour' %}
+      <div class="footer-follow-openhour footer-block footer-block__{{ forloop.index }} {{ block.settings.block_class }}">
+        {% if block.settings.block_title_1 != blank %}
+          <div class="title-block">
+            {{ block.settings.block_title_1 }}
+          </div>
+        {% endif %}
+        {% include 'nov-social' %}
+        {% if block.settings.block_title_2 != blank %}
+          <div class="title-block mt-15">
+            {{ block.settings.block_title_2 }}
+          </div>
+          {{ block.settings.block_content }}
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>

@@ -1,0 +1,711 @@
+<div id="_desktop_vertical_menu" class="vertical_menu d-sm-block">
+	{% include 'site-nav', show_icon: true %}
+</div>
+
+{% schema %}
+{
+	"name": "Vertical menu",
+	"class": "index-section vertical",
+	"settings": [
+		{
+      "type": "link_list",
+      "id": "main_linklist",
+      "label": "Menu",
+      "default": "main-menu"
+    },
+    {
+    	"type": "checkbox",
+    	"id": "show_icon_menu",
+    	"label": "Show icon menu"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_1",
+    	"label": "Icon menu 1"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_2",
+    	"label": "Icon menu 2"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_3",
+    	"label": "Icon menu 3"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_4",
+    	"label": "Icon menu 4"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_5",
+    	"label": "Icon menu 5"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_6",
+    	"label": "Icon menu 6"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_7",
+    	"label": "Icon menu 7"
+    },
+    {
+    	"type": "image_picker",
+    	"id": "icon_menu_8",
+    	"label": "Icon menu 8"
+    },
+    {
+      "type": "checkbox",
+      "id": "novmenu_enable",
+      "label": "Enable Megamenu",
+      "info": "Acitve Vinova Menu"
+    }
+	],
+	"blocks": [
+    {
+      "type": "text",
+      "name": "Megamenu Item",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "img_bg",
+          "label": "background image for block"
+        },
+        {
+          "type": "select",
+          "id": "bg_position",
+          "label": "Background Position",
+          "options": [
+            {
+              "value": "top left",
+              "label": "Top Left"
+            },
+            {
+              "value": "top right",
+              "label": "Top Right"
+            },
+            {
+              "value": "top center",
+              "label": "Top Center"
+            },
+            {
+              "value": "bottom left",
+              "label": "Bottom Left"
+            },
+            {
+              "value": "bottom right",
+              "label": "Bottom Right"
+            },
+            {
+              "value": "bottom center",
+              "label": "Bottom Center"
+            },
+            {
+              "value": "left center",
+              "label": "Left Center"
+            },
+            {
+              "value": "right center",
+              "label": "Right Center"
+            },
+            {
+              "value": "center",
+              "label": "Center"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "novmenu_item",
+          "label": "Menu item name",
+          "info": "Menu item of main-menu. Menu item has dropdown megamenu."
+        },
+        {
+          "type": "text",
+          "id": "submenu_width",
+          "label": "Submenu Width (px)"
+        },
+        {
+          "type": "select",
+          "id": "submenu_alignment",
+          "label": "Alignment",
+          "default": "left",
+          "options": [
+            {
+              "value": "left",
+              "label": "left"
+            },
+            {
+              "value": "center",
+              "label": "center"
+            },
+            {
+              "value": "right",
+              "label": "right"
+            },
+            {
+              "value": "justify",
+              "label": "Justify"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Block navigation",
+          "info": "Admin -> Navigation -> Menu. Position:1"
+        },
+        {
+          "type": "checkbox",
+          "id": "novmenu_menu_enable",
+          "label": "Enable navigation"
+        },
+        {
+          "type": "select",
+          "id": "novmenu_menu_col",
+          "label": "Width on megamenu",
+          "default": "col-lg-3",
+          "options": [
+            {
+              "value": "col-lg-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-lg-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-lg-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-lg-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-lg-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-lg-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-lg-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-lg-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_menu_col_tablet",
+          "label": "Width on megamenu(Tablet)",
+          "default": "col-md-3",
+          "options": [
+            {
+              "value": "col-md-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-md-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-md-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-md-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-md-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-md-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-md-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-md-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_menu_menucol",
+          "label": "Width Fisrt Children Menu On Megamenu",
+          "default": "col-lg-3",
+          "options": [
+            {
+              "value": "col-lg-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-lg-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-lg-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-lg-cus-5 col-md-4",
+              "label": "5/12"
+            },
+            {
+              "value": "col-lg-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-lg-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-lg-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-lg-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-lg-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_menu_menucol_tablet",
+          "label": "Width Fisrt Children Menu On Megamenu(Tablet)",
+          "default": "col-md-3",
+          "options": [
+            {
+              "value": "col-md-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-md-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-md-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-md-cus-5 col-md-4",
+              "label": "5/12"
+            },
+            {
+              "value": "col-md-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-md-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-md-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-md-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-md-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Block Banner"
+        },
+        {
+          "type": "checkbox",
+          "id": "img_shadow",
+          "label": "Banner Shadow",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Block Banner 1",
+          "info": "Position:1"
+        },
+        {
+          "type": "checkbox",
+          "id": "novmenu_banner_enable1",
+          "label": "Enable Banner 1"
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col1",
+          "label": "Width on megamenu",
+          "default": "col-lg-4",
+          "options": [
+            {
+              "value": "col-lg-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-lg-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-lg-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-lg-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-lg-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-lg-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-lg-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-lg-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col1_tablet",
+          "label": "Width on megamenu(Tablet)",
+          "default": "col-md-4",
+          "options": [
+            {
+              "value": "col-md-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-md-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-md-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-md-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-md-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-md-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-md-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-md-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "image_size1",
+          "label": "Image Size Banner 1",
+          "default": "255x300",
+          "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+        },
+        {
+          "type": "image_picker",
+          "id": "novmenu_banner1",
+          "label": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "novmenu_banner_link1",
+          "label": "Banner Link"
+        },
+        {
+          "type": "header",
+          "content": "Block Banner 2",
+          "info": "Position:3"
+        },
+        {
+          "type": "checkbox",
+          "id": "novmenu_banner_enable2",
+          "label": "Enable Banner 2"
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col2",
+          "label": "Width on megamenu",
+          "default": "col-lg-4",
+          "options": [
+            {
+              "value": "col-lg-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-lg-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-lg-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-lg-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-lg-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-lg-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-lg-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-lg-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col2_tablet",
+          "label": "Width on megamenu(Tablet)",
+          "default": "col-md-4",
+          "options": [
+            {
+              "value": "col-md-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-md-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-md-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-md-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-md-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-md-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-md-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-md-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "image_size2",
+          "label": "Image Size Banner 2",
+          "default": "255x300",
+          "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+        },
+        {
+          "type": "image_picker",
+          "id": "novmenu_banner2",
+          "label": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "novmenu_banner_link2",
+          "label": "Banner Link"
+        },
+        {
+          "type": "header",
+          "content": "Block Banner 3",
+          "info": "Position:4"
+        },
+        {
+          "type": "checkbox",
+          "id": "novmenu_banner_enable3",
+          "label": "Enable Banner 3"
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col3",
+          "label": "Width on megamenu",
+          "default": "col-lg-4",
+          "options": [
+            {
+              "value": "col-lg-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-lg-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-lg-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-lg-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-lg-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-lg-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-lg-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-lg-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "novmenu_banner_col3_tablet",
+          "label": "Width on megamenu(Tablet)",
+          "default": "col-md-4",
+          "options": [
+            {
+              "value": "col-md-2",
+              "label": "2/12"
+            },
+            {
+              "value": "col-md-3",
+              "label": "3/12"
+            },
+            {
+              "value": "col-md-4",
+              "label": "4/12"
+            },
+            {
+              "value": "col-md-6",
+              "label": "6/12"
+            },
+            {
+              "value": "col-md-8",
+              "label": "8/12"
+            },
+            {
+              "value": "col-md-9",
+              "label": "9/12"
+            },
+            {
+              "value": "col-md-10",
+              "label": "10/12"
+            },                  
+            {
+              "value": "col-md-12",
+              "label": "12/12"
+            }
+          ]
+        },
+        {
+          "type": "text",
+          "id": "image_size3",
+          "label": "Image Size Banner 3",
+          "default": "255x300",
+          "info": "[Size parameters](https://help.shopify.com/themes/liquid/filters/url-filters#size-parameters)"
+        },
+        {
+          "type": "image_picker",
+          "id": "novmenu_banner3",
+          "label": "Banner image"
+        },
+        {
+          "type": "text",
+          "id": "novmenu_banner_link3",
+          "label": "Banner Link"
+        }           
+      ]
+    }
+  ]
+}
+{% endschema %}
+{% if section.settings.show_icon_menu == true %}
+	<style>
+		.vertical_menu .icon_menu_1 {
+			background: url({{ section.settings.icon_menu_1 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_2 {
+			background: url({{ section.settings.icon_menu_2 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_3 {
+			background: url({{ section.settings.icon_menu_3 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_4 {
+			background: url({{ section.settings.icon_menu_4 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_5 {
+			background: url({{ section.settings.icon_menu_5 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_6 {
+			background: url({{ section.settings.icon_menu_6 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_7 {
+			background: url({{ section.settings.icon_menu_7 | img_url: '50x' }});
+		}
+		.vertical_menu .icon_menu_8 {
+			background: url({{ section.settings.icon_menu_8 | img_url: '50x' }});
+		}
+
+		.vertical_menu .icon_menu {
+			width: 45px;
+			height: 40px;
+      margin-right: 10px;
+			display: inline-block;
+			background-repeat: no-repeat;
+      vertical-align: middle;
+      background-position: center;
+    }
+    .lang-rtl .vertical_menu .icon_menu {
+      margin-left: 10px;
+      margin-right: auto;
+    }
+	</style>
+{% endif %}

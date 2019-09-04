@@ -1,0 +1,51 @@
+<div class="row">
+  <div class="col-md-4 d-flex mb-30">
+    <div class="icon-contact">
+      <i class="fa fa-envelope" aria-hidden="true"></i>
+    </div>
+    <div class="content d-flex">
+      <div class="text-uppercase"><strong>{{ 'sections.page-contact.email' | t }}</strong></div>
+      <div>{{ section.settings.email }}</div>
+    </div>
+  </div>
+  <div class="col-md-4 d-flex mb-30">
+    <div class="icon-contact">
+      <i class="fa fa-home" aria-hidden="true"></i>
+    </div>
+    <div class="content">
+      {{ section.settings.address }}
+    </div>
+  </div>
+  <div class="col-md-4 d-flex justify-content-lg-end">
+    <div class="icon-contact">
+      <i class="fa fa-phone" aria-hidden="true"></i>
+    </div>
+    <div class="content d-flex">
+      <div class="text-uppercase"><strong>{{ 'sections.page-contact.hotline' | t }}</strong></div>
+      <div>{{ section.settings.hotline }}</div>
+    </div>
+  </div>
+</div>
+{% schema %}
+  {
+    "name": "Page Contact",
+    "class": "index-section page-contact",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "email",
+        "label": "Email"
+      },
+      {
+        "type": "richtext",
+        "id": "address",
+        "label": "Address"
+      },
+      {
+        "type": "richtext",
+        "id": "hotline",
+        "label": "Hotline"
+      }
+    ]
+  }
+{% endschema %}
